@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot name="roverboard" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Inertia macros -->
+  <xacro:include filename="$(find common_robots)/urdf/inertias.urdf.xacro" />
+
+  <material name="yellow"><color rgba="0.8 0.8 0.0 0.5" /></material>
+  <material name="light_grey"><color rgba="0.4 0.4 0.4 0.5" /></material>
+
+  <!-- Body -->
+  <link name="base_link"></link>
+
+  <link name="chassis_link">
+    <visual>
+      <xacro:if value="${high_definition_body_visual}">
+	<origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+	  <mesh scale="1. 1. 1." filename="package://common_robots/meshes/nono_body.dae"/>
+        </geometry>
+      </xacro:if>
+      <xacro:unless value="${high_definition_body_visual}">
+	<origin xyz="${chassis_dx} 0 ${chassis_dz}" rpy="0 0 0"/>
+	<geometry><box size="${chassis_l} ${chassis_w} ${chassis_h}"/></geometry>
+	<material name="light_grey" />
+      </xacro:unless>
+    </visual>
+    <xacro:inertial_cuboid_with_pose mass="${chassis_m}"
+				     x_length="${chassis_l}" y_length="${chassis_w}" z_length="${chassis_h}">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cuboid_with_pose>
+  </link>
+
+  <joint name="base_link_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="chassis_link" />
+  </joint>
+
+  <!-- Main Wheels -->
+  <xacro:include filename="$(find roverboard_description)/urdf/wheels.urdf.xacro" />
+  <xacro:wheel prefix="left" wheel_radius="${wheel_radius}" lr_reflect="1">
+    <origin xyz="0 ${(wheel_track-wheel_width)/2} 0" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="right"  wheel_radius="${wheel_radius}" lr_reflect="-1">
+    <origin xyz="0 ${-(wheel_track-wheel_width)/2} 0" rpy="0 0 0" />
+  </xacro:wheel>
+
+  
+</robot>
