@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf8"?>
 
 
-<robot name="nono_0" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="roverboard" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:property name="robot_name" value="roverboard_1" />
 
@@ -20,7 +20,7 @@
   <xacro:property name="wheel_joint_friction" value="0.01" />
   
   <xacro:property name="high_definition_body_visual" value="false" />
-  <xacro:property name="high_definition_wheel_visual" value="false" />
+  <xacro:property name="high_definition_wheel_visual" value="true" />
 
   <xacro:include filename="$(find roverboard_description)/urdf/roverboard.urdf.xacro" />
    

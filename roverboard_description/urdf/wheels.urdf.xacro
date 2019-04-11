@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
-<robot name="nono" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="roverboard" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <!-- Wheels -->
   <xacro:macro name="wheel" params="prefix wheel_radius lr_reflect *joint_pose">
-    <xacro:property name="wheel_mesh_scale" value="${wheel_radius/0.03}" />
+    <xacro:property name="wheel_mesh_scale" value="1." />
     <link name="${prefix}_wheel_link">
       <visual>
 	<xacro:unless value="${high_definition_wheel_visual}">
@@ -17,15 +17,14 @@
 	<xacro:if value="${high_definition_wheel_visual}">
 	  <origin xyz="0 0 0" rpy="0 0 ${lr_reflect*pi/2}"/>
           <geometry>
-	    <mesh scale="1. ${wheel_mesh_scale} ${wheel_mesh_scale}" filename="package://rosmip_description/meshes/wheel_60.dae"/>
+	    <mesh scale="1. ${wheel_mesh_scale} ${wheel_mesh_scale}"
+		  filename="package://roverboard_description/meshes/hoverboard_wheel_6.5.dae"/>
           </geometry>
 	</xacro:if>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
-        <geometry>
-          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
-        </geometry>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
       </collision>
       <xacro:inertial_cylinder_with_pose mass="${wheel_mass}" radius="${wheel_radius}" height="${wheel_width}">
 	<origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
@@ -33,7 +32,7 @@
     </link>
 
     <joint name="${prefix}_wheel_joint" type="continuous">
-      <parent link="chassis_link"/>
+      <parent link="base_link"/>
       <child link="${prefix}_wheel_link" />
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0" />
