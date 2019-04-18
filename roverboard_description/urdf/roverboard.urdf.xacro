@@ -6,7 +6,8 @@
 
   <material name="yellow"><color rgba="0.8 0.8 0.0 0.5" /></material>
   <material name="light_grey"><color rgba="0.4 0.4 0.4 0.5" /></material>
-
+  <material name="tire_material"><color rgba="0 0 0.8 0.5"/></material>
+  
   <!-- Body -->
   <link name="base_link"></link>
 
@@ -44,6 +45,9 @@
   <xacro:wheel prefix="right"  wheel_radius="${wheel_radius}" lr_reflect="-1">
     <origin xyz="0 ${-(wheel_track-wheel_width)/2} 0" rpy="0 0 0" />
   </xacro:wheel>
+  <!-- Caster -->
+  <xacro:rb_caster> </xacro:rb_caster>
+
 
   
 </robot>

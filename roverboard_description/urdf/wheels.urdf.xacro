@@ -2,7 +2,7 @@
 
 <robot name="roverboard" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <!-- Wheels -->
+  <!-- Main Wheels -->
   <xacro:macro name="wheel" params="prefix wheel_radius lr_reflect *joint_pose">
     <xacro:property name="wheel_mesh_scale" value="1." />
     <link name="${prefix}_wheel_link">
@@ -18,7 +18,7 @@
 	  <origin xyz="0 0 0" rpy="0 0 ${lr_reflect*pi/2}"/>
           <geometry>
 	    <mesh scale="1. ${wheel_mesh_scale} ${wheel_mesh_scale}"
-		  filename="package://roverboard_description/meshes/hoverboard_wheel_6.5.dae"/>
+		  filename="package://roverboard_description/meshes/hoverboard_wheel.dae"/>
           </geometry>
 	</xacro:if>
       </visual>
@@ -52,6 +52,108 @@
       </actuator>
     </transmission>
 
+  </xacro:macro>
+
+  <!--              -->
+  <!-- Caster Wheel -->
+  <!--              -->
+  <xacro:macro name="rb_caster">
+    <!-- Vertical axle -->
+    <link name="_caster_ax1_carrier_link">
+      <visual>
+        <xacro:if value="${high_definition_cwheel_plate_visual}">
+          <geometry><mesh filename="package://roverboard_description/meshes/caster.dae"/></geometry>
+        </xacro:if>
+	<xacro:unless value="${high_definition_cwheel_plate_visual}">
+	  <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
+          <geometry><cylinder radius="${caster_ax1_r}" length="${caster_ax1_l}"/></geometry>
+          <material name="transp_green"/>
+	</xacro:unless>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
+        <geometry><cylinder radius="${caster_ax1_r}" length="${caster_ax1_l}"/></geometry>
+      </collision>
+      <xacro:inertial_null/>
+    </link>
+
+    <joint name="$_bl_to_caster_axle_carrier_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="_caster_ax1_carrier_link"/>
+      <origin xyz="${caster_ax1_dx} ${caster_ax1_dy} ${caster_ax1_dz}"/>
+      <!--<limit effort="${caster_ax1_joint_eff_limit}" velocity="${caster_ax1_joint_vel_limit}"/>-->
+      <dynamic damping="${caster_ax1_joint_damping}" friction="{caster_ax1_joint_friction}"/>
+    </joint>
+
+    
+    <!-- Horizontal axle -->
+    <link name="_caster_ax2_link">
+      <visual>
+	<origin xyz="${caster_ax2_loc}" rpy="${pi/2.} 0 0"/>
+	<geometry><cylinder radius="${caster_ax2_r}" length="${caster_ax2_l}"/></geometry>
+      </visual>
+      <xacro:inertial_null/>
+    </link>
+
+    <joint name="_caster_ax1_to_ax2_joint" type="continuous">
+      <parent link="_caster_ax1_carrier_link"/>
+      <child link="_caster_ax2_link"/>
+      <origin xyz="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <!--<limit effort="${caster_ax2_joint_eff_limit}" velocity="${caster_ax2_joint_vel_limit}"/>-->
+      <dynamic damping="${caster_ax2_joint_damping}" friction="{caster_ax2_joint_friction}"/>
+    </joint>
+
+    <transmission name="$_caster_ax1_to_ax2_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="_caster_ax1_to_ax2_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="_caster_ax1_act">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <!-- Wheel -->
+    <link name="_caster_wheel_link">
+      <visual>
+	<xacro:if value="${high_definition_cwheel_visual}">
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+	  <geometry><mesh filename="package://roverboard_description/meshes/rb_caster_w_75x25.dae"/></geometry>
+        </xacro:if>
+	<xacro:unless value="${high_definition_cwheel_visual}">
+	  <origin xyz="0 0 0"/>
+          <geometry><cylinder radius="${caster_wheel_r}" length="${caster_wheel_l}"/></geometry>
+          <material name="tire_material"/>
+	</xacro:unless>
+      </visual>
+      <collision>
+	<origin xyz="0 0 0"/>
+        <geometry><cylinder radius="${caster_wheel_r}" length="${caster_wheel_l}"/></geometry>
+      </collision>
+      <xacro:inertial_hollow_tube_with_pose
+	  mass="${caster_wheel_m}" inner_rad="${caster_wheel_r1}" outer_rad="${caster_wheel_r}" height="${caster_wheel_l}">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </xacro:inertial_hollow_tube_with_pose>
+    </link>
+    
+    <joint name="_caster_fork_to_wheel_joint" type="continuous">
+      <parent link="_caster_ax2_link"/>
+      <child link="_caster_wheel_link"/>
+      <origin xyz="${caster_ax2_loc}" rpy="${pi/2.} 0 0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <transmission name="_caster_fork_to_wheel_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="_caster_fork_to_wheel_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="_caster_ax2_act">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    
   </xacro:macro>
   
 </robot>
