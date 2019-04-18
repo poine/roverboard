@@ -15,13 +15,17 @@
 -->
 
 <launch>
+  <arg name="run_description" default="true" />
+  <arg name="run_viz" default="true" />
 
-  <param name="robot_description"
-	 textfile="$(find roverboard_cartographer)/urdf/vlp16imu3d.urdf" />
+  <group if="$(arg run_description)">
+    <param name="robot_description"
+	   textfile="$(find roverboard_cartographer)/urdf/vlp16imu3d.urdf" />
   
-  <node name="robot_state_publisher" pkg="robot_state_publisher"
-	type="robot_state_publisher" />
-  
+    <node name="robot_state_publisher" pkg="robot_state_publisher"
+	  type="robot_state_publisher" />
+  </group>
+    
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find roverboard_cartographer)/config
@@ -32,9 +36,11 @@
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
-      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+	type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
 
-  <node name="rviz" pkg="rviz" type="rviz" required="true"
-	args="-d $(find roverboard_cartographer)/config/demo_3d.rviz" />
- 
+  <group if="$(arg run_viz)">
+    <node name="rviz" pkg="rviz" type="rviz" required="true"
+	  args="-d $(find roverboard_cartographer)/config/demo_3d.rviz" />
+  </group>
+  
 </launch>

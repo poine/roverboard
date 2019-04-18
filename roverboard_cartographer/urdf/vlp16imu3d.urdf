@@ -1,5 +1,6 @@
+<?xml version="1.0"?>
 
-<robot name="cartographer_backpack_3d">
+<robot name="cartographer_backpack_3d" xmlns:xacro="http://www.ros.org/wiki/xacro" >
   <material name="orange">
     <color rgba="1.0 0.5 0.2 1" />
   </material>
@@ -10,9 +11,7 @@
   <link name="imu_link">
     <visual>
       <origin xyz="0.0 0.0 0.0" />
-      <geometry>
-        <box size="0.06 0.04 0.02" />
-      </geometry>
+      <geometry><box size="0.06 0.04 0.02" /></geometry>
       <material name="orange" />
     </visual>
   </link>
@@ -21,15 +20,14 @@
   <link name="velodyne">
     <visual>
       <origin xyz="0.0 0.0 0.0" />
-      <geometry>
-        <cylinder length="0.07" radius="0.05" />
-      </geometry>
+      <geometry><cylinder length="0.07" radius="0.05" /></geometry>
       <material name="gray" />
     </visual>
   </link>
 
   <link name="base_link" />
-
+  <xacro:property name="degrees_90"  value="${pi/2.}"/>
+  
   <joint name="imu_link_joint" type="fixed">
     <parent link="base_link" />
     <child link="imu_link" />
@@ -38,9 +36,9 @@
 
  
 
-  <joint name="vertical_vlp16_link_joint" type="fixed">
+  <joint name="vlp16_link_joint" type="fixed">
     <parent link="base_link" />
     <child link="velodyne" />
-    <origin xyz="0.0 0. -0.35" rpy="0.0 0.0 0.0" />
+    <origin xyz="0.0 0. 0.05" rpy="0.0 0.0 0.0" />
   </joint>
 </robot>
