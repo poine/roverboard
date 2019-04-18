@@ -1,0 +1,11 @@
+<launch>
+  <include file="$(find roverboard_jetson)/launch/lidar.launch">
+  </include>
+
+  <include file="$(find xsens_driver)/launch/xsens_driver.launch">
+    <arg name="frame_id" value="imu_link"/>
+  </include>
+
+
+</launch>
+
