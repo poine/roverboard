@@ -1,8 +1,9 @@
 #include <iostream>
+
+
 #include "odrive_cpp_sdk.h"
-
-int main(int argc, const char * argv[]) {
-
+  
+#if 0
   std::string odrive_serial_numbers[1] = {"0x306739703235"};
   std::string odrive_serial_numbers_map[2] = {"0x306739703235","0x306739703235"};
   int16_t zeroeth_radian_in_encoder_ticks_[2] = { -2, 0 };
@@ -27,6 +28,19 @@ int main(int argc, const char * argv[]) {
     std::cout << "odrive_cpp_sdk.init :: ODRIVE_SDK_ODRIVE_WITH_SERIAL_NUMBER_NOT_FOUND" << std::endl;
     return EXIT_FAILURE;
   }
+#endif
+  
+
+
+#include "roverboard_bbb/roverboard_odrive.h"
+
+
+
+
+
+int main(int argc, const char * argv[]) {
+
+  Odrive* od = new Odrive();
 
   return 0;
   

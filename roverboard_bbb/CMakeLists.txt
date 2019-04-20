@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   odrive_cpp_sdk)
 
+find_package( async_comm REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -104,7 +105,7 @@ catkin_package(
   INCLUDE_DIRS include 
 #  LIBRARIES roverboard_bbb
   CATKIN_DEPENDS roscpp odrive_cpp_sdk
-#  DEPENDS system_lib
+  DEPENDS async_comm system_lib
 )
 
 ###########
@@ -118,6 +119,7 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
  ${odrive_cpp_sdk_INCLUDE_DIRS}
  /home/poine/work/overlay_ws/src/odrive_cpp_sdk/include/odrive_cpp_sdk/
+ ${async_comm_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -133,7 +135,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp)
+add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp src/roverboard_odrive.cpp )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -147,8 +149,12 @@ add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
-   ${catkin_LIBRARIES}
+   ${catkin_LIBRARIES} ${async_comm_LIBRARIES}
 )
+
+
+add_executable(test_odrive src/test_odrive.cpp src/roverboard_odrive.cpp )
+target_link_libraries(test_odrive ${catkin_LIBRARIES} ${async_comm_LIBRARIES})
 
 #############
 ## Install ##
