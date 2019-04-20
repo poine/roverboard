@@ -117,7 +117,7 @@ include_directories(
  include
  ${catkin_INCLUDE_DIRS}
  ${odrive_cpp_sdk_INCLUDE_DIRS}
- /home/poine/work/overlay_test/src/odrive_cpp_sdk/include/odrive_cpp_sdk/
+ /home/poine/work/overlay_ws/src/odrive_cpp_sdk/include/odrive_cpp_sdk/
 )
 
 ## Declare a C++ library

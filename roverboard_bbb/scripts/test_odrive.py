@@ -18,12 +18,15 @@ class SerialOdrive:
         #s = struct.pack('cccc', chr(self.addr), chr(cmd), chr(data), chr(checksum))
         s = 'v {} {}\r\n'.format(m, v)
         self.ser.write(s)
-
-
+        # request feedback
+        self.ser.write('f {}\r\n'.format(m))
+        pos, vel = self.ser.readline().split()
+        print('m{}: p:{} v:{}'.format(m, pos, vel))
+        
 class Node:
     def __init__(self):
         self.odrive = SerialOdrive()
-        rospy.init_node('nono_{}'.format('blas'))
+        rospy.init_node('nono_{}'.format('dumb_odrive_test'))
         rospy.Subscriber('/joy', sensor_msgs.msg.Joy, self.joy_callback)
 
     def run(self):
@@ -34,14 +37,12 @@ class Node:
     def joy_callback(self, msg):
         self.last_input = rospy.get_rostime()
         linear, angular = msg.axes[1], msg.axes[2] 
-        print linear
+        #print linear
         self.odrive.send(0, linear*150+angular*40)
         self.odrive.send(1, -linear*150+angular*40)
 
     
 def main():
-    #_s = SerialOdrive()
-    #_s.send()
     n = Node()
     n.run()
 

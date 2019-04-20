@@ -3,8 +3,8 @@
 
 int main(int argc, const char * argv[]) {
 
-  std::string odrive_serial_numbers[1] = {"0x303339373235510a330045"};
-  std::string odrive_serial_numbers_map[2] = {"0x303339373235510a330045","0x303339373235510a330045"};
+  std::string odrive_serial_numbers[1] = {"0x306739703235"};
+  std::string odrive_serial_numbers_map[2] = {"0x306739703235","0x306739703235"};
   int16_t zeroeth_radian_in_encoder_ticks_[2] = { -2, 0 };
 
   bool odrive_position_per_motor[2] = {false, true};
