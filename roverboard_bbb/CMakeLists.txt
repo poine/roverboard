@@ -9,6 +9,9 @@ add_compile_options(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  controller_interface
+  controller_manager
+  message_generation
   odrive_cpp_sdk)
 
 find_package( async_comm REQUIRED)
@@ -135,7 +138,11 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp src/roverboard_odrive.cpp )
+##add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp src/roverboard_odrive.cpp )
+add_executable(roverboard_hardware_interface_node
+  src/roverboard_hardware_interface.cpp
+  src/roverboard_odrive.cpp
+  )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -148,9 +155,10 @@ add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp src/roverboard_o
 #add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(${PROJECT_NAME}_node
-   ${catkin_LIBRARIES} ${async_comm_LIBRARIES}
-)
+#target_link_libraries(${PROJECT_NAME}_node
+#   ${catkin_LIBRARIES} ${async_comm_LIBRARIES}
+#)
+target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES})
 
 
 add_executable(test_odrive src/test_odrive.cpp src/roverboard_odrive.cpp )

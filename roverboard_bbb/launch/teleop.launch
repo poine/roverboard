@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="robot_name" default="nono_0"/>
+  
+  <rosparam command="load" file="$(find roverboard_bbb)/config/teleop.yaml" />
+  
+  <node pkg="joy" type="joy_node" name="joy_node" />
+
+  <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy">
+    <remap from="cmd_vel" to="diff_drive_controller/cmd_vel" />
+  </node>
+
+</launch>
