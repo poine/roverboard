@@ -23,6 +23,7 @@ class Odrive {
   enum Status status_;
   void serial_callback(const uint8_t* buf, size_t len);
   void parse_byte(const uint8_t b);
+  std::mutex enc_mutex_;
   double enc_[ODRIVE_AXIS_NB];
   double enc_vel_[ODRIVE_AXIS_NB];
 };
