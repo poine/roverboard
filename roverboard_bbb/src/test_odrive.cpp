@@ -10,7 +10,7 @@ int main(int argc, const char * argv[]) {
   Odrive od;
   od.init();
   for (uint8_t i = 0; i < 100; i++) {
-    od.send_velocity_setpoint(-10, -10);
+    od.send_velocity_setpoint(70, -70);
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
   return 0;

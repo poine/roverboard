@@ -105,7 +105,7 @@ catkin_package(
   INCLUDE_DIRS include 
 #  LIBRARIES roverboard_bbb
   CATKIN_DEPENDS roscpp odrive_cpp_sdk
-  DEPENDS async_comm system_lib
+  DEPENDS async_comm
 )
 
 ###########

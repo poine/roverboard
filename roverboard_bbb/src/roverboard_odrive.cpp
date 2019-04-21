@@ -1,3 +1,5 @@
+#include <boost/format.hpp>
+
 #include "roverboard_bbb/roverboard_odrive.h"
 
 Odrive::Odrive():
@@ -19,9 +21,8 @@ bool Odrive::init() {
 
 
 void Odrive::send_velocity_setpoint(int m1, int m2) {
-  std::string s = "v 0 100\r\n" ;
-  const char* cs = s.c_str();
-  const uint8_t* cs1 = reinterpret_cast<const uint8_t* >(cs);
-  serial_.send_bytes(cs1, s.length());
+  std::string s = boost::str(boost::format("v 0 %d\r\n") % m1);
+  //std::string s = "v 0 50\r\n" ;
+  serial_.send_bytes(reinterpret_cast<const uint8_t* >(s.c_str()), s.length());
 }
 
