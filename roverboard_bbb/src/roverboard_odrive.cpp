@@ -45,6 +45,8 @@ void Odrive::parse_byte(const uint8_t b) {
       case waiting_fb_0: {
 	std::lock_guard<std::mutex> guard(enc_mutex_);
 	sscanf(reinterpret_cast<const char*>(buf_),"%lf %lf",&enc_[0], &enc_vel_[0]);
+	std::string s2 = "f 1\r\n" ;
+	serial_.send_bytes(reinterpret_cast<const uint8_t*>(s2.c_str()), s2.length());
 	status_ = waiting_fb_1;
 	break;
       }
@@ -86,7 +88,7 @@ void Odrive::read_feedback(double* enc, double* enc_vel) {
   //std::cout << "sending: " << s << std::endl;
   //std::cout << "thread " << std::this_thread::get_id() << " in read_feedback...\n";
   serial_.send_bytes(reinterpret_cast<const uint8_t*>(s.c_str()), s.length());
-  std::string s2 = "f 1\r\n" ;
-  serial_.send_bytes(reinterpret_cast<const uint8_t*>(s2.c_str()), s2.length());
+  //std::string s2 = "f 1\r\n" ;
+  //serial_.send_bytes(reinterpret_cast<const uint8_t*>(s2.c_str()), s2.length());
   status_ = waiting_fb_0;
 }
