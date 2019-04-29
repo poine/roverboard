@@ -11,7 +11,7 @@ import time, serial, struct
 
 class SerialOdrive:
     def __init__(self):
-        self.device = '/dev/ttyS5'
+        self.device = '/dev/ttyACM0'
         self.ser = serial.Serial(port=self.device, baudrate=115200)
 
     def send(self, m, v):
@@ -38,8 +38,8 @@ class Node:
         self.last_input = rospy.get_rostime()
         linear, angular = msg.axes[1], msg.axes[2] 
         #print linear
-        self.odrive.send(0, linear*150+angular*40)
-        self.odrive.send(1, -linear*150+angular*40)
+        self.odrive.send(0, linear*150+angular*-80)
+        self.odrive.send(1, -linear*150+angular*-80)
 
     
 def main():

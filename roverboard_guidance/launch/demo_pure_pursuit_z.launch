@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="robot_name"      default="jeanmarie"/>
+
+  <arg name="start_map"       default="true"/>
+  <arg name="start_pp"        default="true"/>
+  <arg name="map" default="$(find two_d_guidance)/maps/track_ethz_cam1_new.yaml" />
+  <arg name="path_filename" default="$(find two_d_guidance)/paths/demo_z/track_ethz_cam1_cw.npz" />
+  <arg name="vel_setpoint" default="0.2"/>
+  <arg name="look_ahead" default="0.4"/>
+  <arg name="robot_pose_topic" default="/smocap/marker_0" />
+  <arg name="robot_ref_link" default="base_link" />
+  
+  <!--  ****** Maps *****  -->
+  <group if="$(arg start_map)" >
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map)" output="screen">
+      <param name="frame_id" value="/map"/>
+    </node>
+    <!--  ****** World to map transform publisher *****  -->
+    <node name="world_to_map_publisher" pkg="tf" type="static_transform_publisher"
+          args="0 0 0  0 0 0 world map 100"/>
+  </group>
+  
+  <!--  ****** Pure pursuit controller *****  -->
+  <group if="$(arg start_pp)">
+    <node name="pure_pursuit" pkg="two_d_guidance" type="pp_guidance_node.py" output="screen">
+      <param name="twist_cmd_topic" value="/diff_drive_controller/cmd_vel"/>
+      <param name="robot_pose_topic" value="$(arg robot_pose_topic)" />
+      <param name="path_filename" value="$(arg path_filename)"/>
+      <param name="vel_setpoint" value="$(arg vel_setpoint)"/>
+      <param name="look_ahead" value="$(arg look_ahead)"/>
+      <param name="robot_ref_link" value="$(arg robot_ref_link)"/>
+      
+      <remap from="/pure_pursuit/path" to="$(arg robot_name)/pure_pursuit/path" />
+      <remap from="/pure_pursuit/goal" to="$(arg robot_name)/pure_pursuit/goal" />
+      <remap from="/pure_pursuit/arc"  to="$(arg robot_name)/pure_pursuit/arc" />
+    </node>
+  </group>
+
+</launch>
