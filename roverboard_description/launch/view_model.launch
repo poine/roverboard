@@ -13,7 +13,7 @@
   </node>
 
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find roverboard_description)/rviz/view_model.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find roverboard_description)/rviz/view_model_$(arg robot_name).rviz" />
   
 </launch>
 

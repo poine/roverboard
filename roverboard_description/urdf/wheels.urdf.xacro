@@ -18,7 +18,7 @@
 	  <origin xyz="0 0 0" rpy="0 0 ${lr_reflect*pi/2}"/>
           <geometry>
 	    <mesh scale="1. ${wheel_mesh_scale} ${wheel_mesh_scale}"
-		  filename="package://roverboard_description/meshes/hoverboard_wheel.dae"/>
+		  filename="${high_definition_wheel_mesh}"/>
           </geometry>
 	</xacro:if>
       </visual>
