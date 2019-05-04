@@ -7,7 +7,8 @@
 
 
 Odrive::Odrive():
-  serial_("/dev/ttyACM0", 115200),
+  //serial_("/dev/ttyACM0", 115200),
+  serial_("/dev/ttyACM0", 460800),
   buf_idx_(0),
   status_(iddle)
 {
