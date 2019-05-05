@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-  <arg name="robot_name" default="nono_0"/>
+  <arg name="robot_name" default="pierrette"/>
+  <arg name="run_vanilla_control" default="false"/>
   
   <rosparam command="load" file="$(find roverboard_bbb)/config/teleop.yaml" />
   

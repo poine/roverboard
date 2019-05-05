@@ -7,7 +7,6 @@
 
 
 Odrive::Odrive():
-  //serial_("/dev/ttyACM0", 115200),
   serial_("/dev/ttyACM0", 460800),
   buf_idx_(0),
   status_(iddle)
@@ -41,22 +40,7 @@ void Odrive::parse_byte(const uint8_t b) {
     buf_idx_ += 1;
     if (buf_[buf_idx_-1] == '\n') {
       buf_[buf_idx_] = 0;
-      //std::cout << "parsing buf (sta "<< status_ << "): " << buf_ << std::endl;
-      switch (status_) {
-      case waiting_fb_0: {
-	std::lock_guard<std::mutex> guard(enc_mutex_);
-	sscanf(reinterpret_cast<const char*>(buf_),"%lf %lf",&enc_[0], &enc_vel_[0]);
-	std::string s2 = "f 1\r\n" ;
-	serial_.send_bytes(reinterpret_cast<const uint8_t*>(s2.c_str()), s2.length());
-	status_ = waiting_fb_1;
-	break;
-      }
-      case waiting_fb_1: {
-	std::lock_guard<std::mutex> guard(enc_mutex_);
-	sscanf(reinterpret_cast<const char*>(buf_),"%lf %lf",&enc_[1], &enc_vel_[1]);
-	status_ = iddle;
-      }
-      }
+      parse_line();
       buf_idx_ = 0;
     }
   }
@@ -67,7 +51,28 @@ void Odrive::parse_byte(const uint8_t b) {
   }
 }
 
-			     
+
+void Odrive::parse_line() {
+  //std::cout << "parsing buf (sta "<< status_ << "): " << buf_ << std::endl;
+  switch (status_) {
+  case waiting_fb_0: {
+    std::lock_guard<std::mutex> guard(enc_mutex_);
+    sscanf(reinterpret_cast<const char*>(buf_),"%lf %lf",&enc_[0], &enc_vel_[0]);
+    std::string s2 = "f 1\r\n" ;
+    serial_.send_bytes(reinterpret_cast<const uint8_t*>(s2.c_str()), s2.length());
+    status_ = waiting_fb_1;
+    break;
+  }
+  case waiting_fb_1: {
+    std::lock_guard<std::mutex> guard(enc_mutex_);
+    sscanf(reinterpret_cast<const char*>(buf_),"%lf %lf",&enc_[1], &enc_vel_[1]);
+    status_ = iddle;
+  }
+  }
+  
+}
+
+
 void Odrive::send_velocity_setpoint(int m1, int m2) {
   std::string s = boost::str(boost::format("v 0 %d\r\n") % m1);
   //std::cout << "sending: " << s << std::endl;

@@ -4,12 +4,18 @@
   <arg name="robot_name" default="pierrette" />
 
   <arg name="publish_robot_state" default="false"/>
+  <arg name="run_vanilla_control" default="false"/>
 
   <!-- load control configuration -->
   <rosparam command="load" file="$(find roverboard_bbb)/config/control_$(arg robot_name).yaml" />
 
   <!-- load controllers -->
-  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="joint_publisher diff_drive_controller"/>
+  <group if="$(arg run_vanilla_control)">
+    <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="joint_publisher diff_drive_controller"/>
+  </group>
+  <group unless="$(arg run_vanilla_control)">
+    <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="joint_publisher roverboard_diff_drive_controller"/>
+  </group>
   
   <!-- publish robot state -->
   <group if="$(arg publish_robot_state)">
