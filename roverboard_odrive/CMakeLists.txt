@@ -2,12 +2,23 @@ cmake_minimum_required(VERSION 2.8.3)
 project(roverboard_odrive)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  socketcan_interface)
+
+find_package(Boost REQUIRED
+  COMPONENTS
+    chrono
+    system
+    thread
+)
+
+find_package(Threads REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -103,6 +114,7 @@ catkin_package(
 #  LIBRARIES roverboard_odrive
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
+  DEPENDS Boost
 )
 
 ###########
@@ -113,7 +125,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-# ${catkin_INCLUDE_DIRS}
+ ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -130,7 +142,10 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/roverboard_odrive_node.cpp)
+add_executable(test_odrive_can src/test_odrive_can.cpp)
 
+add_executable(test_odrive_can2 src/test_odrive_can2.cpp)
+target_link_libraries(test_odrive_can2 ${Boost_LIBRARIES})
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
