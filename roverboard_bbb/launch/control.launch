@@ -4,7 +4,7 @@
   <arg name="robot_name" default="pierrette" />
 
   <arg name="publish_robot_state" default="false"/>
-  <arg name="run_vanilla_control" default="false"/>
+  <arg name="run_vanilla_control" default="true"/>
 
   <!-- load control configuration -->
   <rosparam command="load" file="$(find roverboard_bbb)/config/control_$(arg robot_name).yaml" />

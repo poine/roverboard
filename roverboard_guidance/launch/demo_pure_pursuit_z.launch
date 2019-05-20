@@ -6,9 +6,10 @@
   <arg name="start_pp"        default="true"/>
   <arg name="map" default="$(find two_d_guidance)/maps/track_ethz_cam1_new.yaml" />
   <arg name="path_filename" default="$(find two_d_guidance)/paths/demo_z/track_ethz_cam1_cw.npz" />
-  <arg name="vel_setpoint" default="0.2"/>
-  <arg name="look_ahead" default="0.4"/>
-  <arg name="robot_pose_topic" default="/smocap/marker_0" />
+  <arg name="vel_setpoint" default="0.3"/>
+  <arg name="look_ahead" default="0.45"/>
+  <arg name="robot_pose_topic" default="/smocap/marker_0" /> 
+  <!--<arg name="robot_pose_topic" default="/jeanmarie/ekf/pose" /> -->
   <arg name="robot_ref_link" default="base_link" />
   
   <!--  ****** Maps *****  -->
@@ -18,8 +19,25 @@
     </node>
     <!--  ****** World to map transform publisher *****  -->
     <node name="world_to_map_publisher" pkg="tf" type="static_transform_publisher"
-          args="0 0 0  0 0 0 world map 100"/>
+         args="0 0 0  0 0 0 world map 100"/>
+    <!--    <node name="world_to_map_publisher" pkg="tf2_ros" type="static_transform_publisher"
+          args="0 0 0  0 0 0 world map"/> -->
   </group>
+
+
+  <!--  ****** Navigation Filter *****  -->
+  <arg name="robot_marker" default="0"/>
+  
+  <node pkg="robot_localization" type="ekf_localization_node" name="$(arg robot_name)_ekf_localization" clear_params="true" output="screen">
+    <rosparam command="load" file="$(find roverboard_guidance)/config/ekf_smocap.yaml" />
+    <!--<rosparam param="base_link_frame" subst_value="True">$(arg robot_name)/base_link</rosparam> -->
+    <!--    <rosparam param="odom_frame" subst_value="True">$(arg robot_name)/odom</rosparam> -->
+    <!--<rosparam param="odom0" subst_value="True">$(arg robot_name)/rosmip_balance_controller/odom</rosparam> -->
+    <!-- <rosparam param="pose0" subst_value="True">/smocap/marker_$(arg robot_marker)</rosparam> -->
+    <remap from="odometry/filtered" to="$(arg robot_name)/ekf/pose"/>
+  </node>
+
+
   
   <!--  ****** Pure pursuit controller *****  -->
   <group if="$(arg start_pp)">
