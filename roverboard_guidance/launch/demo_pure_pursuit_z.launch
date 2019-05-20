@@ -24,7 +24,7 @@
   <!--  ****** Pure pursuit controller *****  -->
   <group if="$(arg start_pp)">
     <node name="pure_pursuit" pkg="two_d_guidance" type="pp_guidance_node.py" output="screen">
-      <param name="twist_cmd_topic" value="/diff_drive_controller/cmd_vel"/>
+      <param name="twist_cmd_topic" value="/roverboard_diff_drive_controller/cmd_vel"/>
       <param name="robot_pose_topic" value="$(arg robot_pose_topic)" />
       <param name="path_filename" value="$(arg path_filename)"/>
       <param name="vel_setpoint" value="$(arg vel_setpoint)"/>
