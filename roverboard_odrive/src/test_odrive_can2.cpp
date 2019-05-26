@@ -40,7 +40,7 @@ int main(int argc, const char * argv[]) {
   g_driver = std::make_shared<can::SocketCANInterface>();
   can::FrameListenerConstSharedPtr frame_printer = g_driver->createMsgListener(print_frame);
   can::StateListenerConstSharedPtr error_printer = g_driver->createStateListener(print_error);
-  if(!g_driver->init("can0", false)){
+  if(!g_driver->init("can1", false)){
     print_error(g_driver->getState());
     return 1;
   }

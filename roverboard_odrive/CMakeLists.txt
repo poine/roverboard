@@ -9,7 +9,8 @@ add_compile_options(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  socketcan_interface)
+  socketcan_interface
+  rospy)
 
 find_package(Boost REQUIRED
   COMPONENTS
@@ -27,7 +28,7 @@ find_package(Threads REQUIRED)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -110,8 +111,8 @@ find_package(Threads REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES roverboard_odrive
+  INCLUDE_DIRS include
+  LIBRARIES roverboard_odrive_can
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
   DEPENDS Boost
@@ -124,14 +125,14 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+ include
  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/roverboard_odrive.cpp
-# )
+add_library(roverboard_odrive_can
+   src/roverboard_odrive_can.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -146,6 +147,10 @@ add_executable(test_odrive_can src/test_odrive_can.cpp)
 
 add_executable(test_odrive_can2 src/test_odrive_can2.cpp)
 target_link_libraries(test_odrive_can2 ${Boost_LIBRARIES})
+
+add_executable(test_odrive_can3 src/test_odrive_can3.cpp src/roverboard_odrive_can.cpp)
+target_link_libraries(test_odrive_can3 ${Boost_LIBRARIES})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
