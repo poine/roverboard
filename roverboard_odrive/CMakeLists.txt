@@ -20,6 +20,7 @@ find_package(Boost REQUIRED
 )
 
 find_package(Threads REQUIRED)
+find_package(async_comm REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -112,7 +113,7 @@ catkin_python_setup()
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES roverboard_odrive_can
+  LIBRARIES roverboard_odrive_can roverboard_odrive_ascii
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
   DEPENDS Boost
@@ -127,6 +128,7 @@ catkin_package(
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
+ ${async_comm_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -134,6 +136,11 @@ add_library(roverboard_odrive_can
    src/roverboard_odrive_can.cpp
 )
 
+
+add_library(roverboard_odrive_ascii
+   src/roverboard_odrive_ascii.cpp
+)
+target_link_libraries(roverboard_odrive_ascii ${async_comm_LIBRARIES})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -150,6 +157,9 @@ target_link_libraries(test_odrive_can2 ${Boost_LIBRARIES})
 
 add_executable(test_odrive_can3 src/test_odrive_can3.cpp src/roverboard_odrive_can.cpp)
 target_link_libraries(test_odrive_can3 ${Boost_LIBRARIES})
+
+add_executable(test_odrive_ascii src/test_odrive_ascii.cpp src/roverboard_odrive_ascii.cpp )
+target_link_libraries(test_odrive_ascii ${catkin_LIBRARIES} ${async_comm_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
