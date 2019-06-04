@@ -7,6 +7,7 @@
 #define GET_ENCODER_ESTIMATES 0x009
 #define SET_VEL_SETPOINT      0x00D
 #define GET_IQ                0x014
+#define REBOOT_ODRIVE         0x016
 #define GET_VBUS_VOLTAGE      0x017
 
 #ifdef DEBUG__
@@ -63,7 +64,7 @@ void Odrive::sendVelSetpoints(double* vsps, double* iq_ff) {
     sendVelSetpoint(i, vsps[i], iq_ff[i]);
 }
 
-
+  
 
 
 
@@ -100,6 +101,7 @@ void Odrive::sendVelSetpoint(int node_id, float vsp, float iff) {
 
 void  Odrive::reqEncoder(int node_id) { sendCANFrame(true, node_id, GET_ENCODER_ESTIMATES, 0, NULL);}
 void  Odrive::reqIq(int node_id) { sendCANFrame(true, node_id, GET_IQ, 0, NULL);}
+void Odrive::reboot() {sendCANFrame(false, 0, REBOOT_ODRIVE, 0, NULL);}
 
 
 void Odrive::sendCANFrame(bool rtr, int node_id, int msg_id, int payload_len, void* payload) {

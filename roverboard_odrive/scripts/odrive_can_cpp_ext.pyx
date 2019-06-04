@@ -18,6 +18,7 @@ cdef extern from "roverboard_odrive/roverboard_odrive_can.h":
         bool init()
         void sendVelSetpoints(double* vsps, double* iq_ff)
         void readFeedback(double* enc, double* enc_vel, double* iq_sp, double* iq_meas)
+        void reboot()
     
 cdef class Odrive:
     cdef c_Odrive *thisptr
@@ -42,3 +43,6 @@ cdef class Odrive:
         cdef double iq_meas[2]
         self.thisptr.readFeedback(enc, enc_vel, iq_sp, iq_meas)
         return enc[0], enc[1], enc_vel[0], enc_vel[1], iq_sp[0], iq_sp[1], iq_meas[0], iq_meas[1]
+
+    def reboot(self):
+        self.thisptr.reboot()
