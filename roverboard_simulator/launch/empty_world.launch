@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="start_gazebo" default="true" />
+  <arg name="start_base_control" default="true"/>
+  <arg name="start_state_publisher" default="true"/>
+  
+  <arg name="use_sim_time" default="true" />
+  <arg name="gz_gui" default="true" />
+  <arg name="world_name" default="worlds/empty.world" />
+
+  <arg name="robot_name" default="pierrette"/>
+  <arg name="robot_initial_xy" default="-x 0 -y 0"/>
+  <arg name="robot_initial_z" default="-z 0.08" />
+  <arg name="robot_initial_loc" default="$(arg robot_initial_xy) $(arg robot_initial_z)"/>
+  <arg name="robot_initial_ori" default="-R 0 -P 0 -Y 0"/>
+  
+  <!-- Load URDF into the ROS Parameter Server -->
+  <param name="$(arg robot_name)/robot_description"
+	 command="$(find xacro)/xacro $(find roverboard_simulator)urdf/roverboard_gazebo.urdf robot_name:=$(arg robot_name)" />
+  
+  <!--  robot_state_publisher -->
+  <group if="$(arg start_state_publisher)">
+    <node name="$(arg robot_name)_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	  respawn="false" output="screen">
+      <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
+      <remap from="robot_description" to="$(arg robot_name)/robot_description" />
+      <param name="tf_prefix" value="$(arg robot_name)"/>
+    </node>
+  </group>
+
+  <!--  base control (joint publisher, diff drive controller) -->
+  <group if="$(arg start_base_control)">
+    <include file="$(find roverboard_control)/launch/base_control.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+    </include>
+  </group>
+
+  <!-- Launch Gazebo with the specified world -->
+  <group if="$(arg start_gazebo)">
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="debug" value="false" />
+      <arg name="gui" value="$(arg gz_gui)" />
+      <arg name="use_sim_time" value="$(arg use_sim_time)" />
+      <arg name="world_name" value="$(arg world_name)" />
+    </include>
+  </group>
+
+
+  <!-- Spawn robot in gazebo -->
+  <node name="$(arg robot_name)_urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="-urdf -model $(arg robot_name) -param  $(arg robot_name)/robot_description
+	      $(arg robot_initial_loc) $(arg robot_initial_ori) -robot_namespace $(arg robot_name)" />
+  
+</launch>
+

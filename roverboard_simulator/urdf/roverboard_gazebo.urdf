@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot name="$(arg robot_name)" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="robot_name" default="pierrette"/>
+  
+  <xacro:include filename="$(find roverboard_description)/urdf/$(arg robot_name).urdf.xacro" />
+
+  <xacro:include filename="$(find common_simulations)/urdf/sensors_gazebo.urdf.xacro" />
+
+  <!-- ros_control plugin -->
+  <xacro:arg name="robot_name" default="pierrette"/>
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>$(arg robot_name)</robotNamespace>
+      <robotParam>robot_description</robotParam>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <controlPeriod>0.01</controlPeriod>
+    </plugin>
+  </gazebo>
+
+  <!-- ground truth -->
+  <gazebo>
+    <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+      <frameName>world</frameName>
+      <bodyName>base_link</bodyName>
+      <topicName>base_link_truth</topicName>
+      <updateRate>100.0</updateRate>
+    </plugin>
+  </gazebo>
+
+  <!-- Camera -->
+  <xacro:if value="${use_eachine_camera}">
+    <xacro:gazebo_rpi_camera cam_name="camera1"/>
+  </xacro:if>
+  <!-- Lidar -->
+  <xacro:if value="${use_hokuyo_lidar}">
+    <xacro:gazebo_hokuyo laser_name="laser1"/>
+  </xacro:if>
+  
+</robot>
