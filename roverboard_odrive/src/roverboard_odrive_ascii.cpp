@@ -1,7 +1,7 @@
 #include <iostream>
 #include <boost/format.hpp>
 
-#include "roverboard_bbb/roverboard_odrive.h"
+#include "roverboard_odrive/roverboard_odrive_ascii.h"
 
 
 
@@ -24,6 +24,8 @@ bool Odrive::init() {
     return false;
   }
   std::printf("initialized serial port\n");
+  
+  read_feedback(enc_, enc_vel_);
   return true;
 }
 

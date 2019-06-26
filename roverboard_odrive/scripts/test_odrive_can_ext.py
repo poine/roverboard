@@ -24,17 +24,17 @@ class StepSetpoint:
         return [v, v]
 
 class StairSetpoint:
-    def __init__(self, a0=-75., a1=75, stairs=15, dt=2., t0=0):
+    def __init__(self, a0=-75., a1=75, stairs=15, dt=4., t0=0):
         self.a0, self.a1, self.dt, self.stairs, self.t0 = a0, a1, dt, stairs, t0
         
     def get(self, t):
         v = stairs(t, self.stairs, self.dt, self.a0, self.a1)
         return [v, v]
     
-def measure(od, dt=0.01, dur=40., filename='/tmp/odrive_vel_step_lifted2.npz'):
+def measure(od, dt=0.01, dur=60., filename='/tmp/odrive_vel_step_lifted2.npz'):
     #sp = SineSetpoint()
-    sp = StepSetpoint()
-    #sp = StairSetpoint()
+    #sp = StepSetpoint()
+    sp = StairSetpoint()
     _time = np.arange(0, dur, dt)
     _time_r = np.zeros(len(_time))
     wheel_sp_cpr = np.zeros((len(_time), 2)) # in cpr/s
@@ -59,17 +59,19 @@ def measure(od, dt=0.01, dur=40., filename='/tmp/odrive_vel_step_lifted2.npz'):
              mot_a_sp=mot_a_sp, mot_a_meas=mot_a_meas)
 
 def test(od):
-    od.send_velocity_setpoint(50, 50)
+    od.reboot()
+    for i in range(1000):
+        od.send_velocity_setpoint(50, 50)
+        print( od.read_feedback())
+        time.sleep(0.1)
     print( od.read_feedback())
-    time.sleep(0.5)
-    print( od.read_feedback())
-    od.send_velocity_setpoint(0, 0)
+    #od.send_velocity_setpoint(0, 0)
 
 def main():
     od = odrive_can_cpp_ext.Odrive()
     od.init()
-    #test(od)
-    measure(od)
+    test(od)
+    #measure(od)
 
 if __name__ == '__main__':
     main()

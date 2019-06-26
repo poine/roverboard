@@ -24,18 +24,18 @@ class my_build_ext(Cython.Distutils.build_ext):
 
 
 ext = Extension(
-    "odrive_can_cpp_ext",      # name of extension
-    ["odrive_can_cpp_ext.pyx"],  # filename of our Pyrex/Cython source
+    "odrive_ascii_cpp_ext",      # name of extension
+    ["odrive_ascii_cpp_ext.pyx"],  # filename of our Pyrex/Cython source
     language="c++",    # this causes Pyrex/Cython to create C++ source
-    include_dirs=["/home/poine/work/roverboard/roverboard_odrive/include", '/opt/ros/melodic/include/', '/home/poine/work/overlay_ws/src/ros_canopen/socketcan_interface/include/'],
-    extra_compile_args=["-std=c++11", "-Wno-cpp", "-Wno-unused-local-typedefs"],
-    libraries=["roverboard_odrive_can", "boost_thread"],
+    include_dirs=["/home/poine/work/roverboard/roverboard_odrive/include", '/opt/ros/melodic/include/'],
+    extra_compile_args=["-std=c++11", "-Wno-cpp"],
+    libraries=["roverboard_odrive_ascii"],
     library_dirs=["/opt/ros/melodic/lib/", "/home/poine/work/overlay_ws/devel/lib/"],
     runtime_library_dirs=[],
 )
 
 setup(
-    name = 'odrive_can_cpp_ext',
+    name = 'odrive_ascii_cpp_ext',
     ext_modules = [ext],
     cmdclass = {'build_ext': my_build_ext}
 )

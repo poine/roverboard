@@ -21,6 +21,7 @@ class Odrive {
   void sendVelSetpoint(int node_id, float vsp, float iff);
   void reqEncoder(int node_id);
   void reqIq(int node_id);
+  void reboot();
   
  private:
   std::mutex* enc_mutex_;
