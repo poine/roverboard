@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Starts control -->
+  <arg name="robot_name" default="pierrette" />
+
+  <arg name="publish_robot_state" default="false"/>
+
+  <!-- load control configuration -->
+  <rosparam command="load" file="$(find roverboard_control)/cfg/base_control_$(arg robot_name).yaml" ns="$(arg robot_name)"/>
+
+  <!-- load controllers -->
+  <rosparam param="$(arg robot_name)/diff_drive_controller/base_frame_id" subst_value="True">$(arg robot_name)/base_link</rosparam>
+  <rosparam param="$(arg robot_name)/diff_drive_controller/odom_frame_id" subst_value="True">$(arg robot_name)/odom</rosparam>
+  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" ns="$(arg robot_name)" args="joint_publisher diff_drive_controller"/>
+
+  <!-- publish robot state -->
+  <group if="$(arg publish_robot_state)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find roverboard_description)/urdf/roverboard_1.urdf.xacro"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+  </group>
+  
+</launch>
