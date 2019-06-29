@@ -11,6 +11,14 @@
   <!-- Body -->
   <link name="base_link"></link>
 
+  <link name="base_link_footprint"></link>
+  <joint name="base_link_footprint_joint" type="fixed">
+    <origin xyz="0 0 ${-wheel_radius}" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="base_link_footprint" />
+  </joint>
+
+  
   <link name="chassis_link">
     <visual>
       <xacro:if value="${high_definition_body_visual}">
@@ -48,6 +56,20 @@
   <!-- Caster -->
   <xacro:rb_caster> </xacro:rb_caster>
 
-
-  
+  <!-- Sensors -->
+  <!-- Camera -->
+  <xacro:include filename="$(find common_robots)/urdf/sensors.urdf.xacro" />
+  <xacro:if value="${use_eachine_camera}">
+    <xacro:property name="cam_look_down_deg" value="25." />
+    <xacro:cs_camera_eachine>
+      <origin xyz="0.06 0 0.1" rpy="0 ${cam_look_down_deg/180*pi}} 0" />
+    </xacro:cs_camera_eachine>
+  </xacro:if>
+  <!-- Lidar -->
+  <xacro:if value="${use_hokuyo_lidar}">
+    <xacro:property name="laser_look_down_deg" value="5." />
+    <xacro:cs_hokuyo>
+      <origin xyz="0.04 0 0.1" rpy="0 ${laser_look_down_deg/180*pi}} 0" />
+    </xacro:cs_hokuyo>
+  </xacro:if>
 </robot>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf8"?>
 
 
-<robot name="jeanmarie" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="pierrette" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:property name="robot_name" value="pierrette" />
 
@@ -41,11 +41,17 @@
 
   
   <xacro:property name="high_definition_body_visual" value="false" />
-  <xacro:property name="high_definition_wheel_visual" value="false" />
-  <xacro:property name="high_definition_wheel_mesh" value="package://roverboard_description/meshes/hoverboard_wheel_6.5.dae" />
+  <xacro:property name="high_definition_wheel_visual" value="true" />
+  <xacro:property name="high_definition_wheel_mesh" value="package://roverboard_description/meshes/hoverboard_wheel_6.5_bis.dae" />
   <xacro:property name="high_definition_cwheel_visual" value="false" />
   <xacro:property name="high_definition_cwheel_plate_visual" value="false" />
   
+  <xacro:property name="use_eachine_camera" value="true" />
+  <xacro:property name="high_definition_camera_visual" value="true" />
+  <xacro:property name="use_hokuyo_lidar" value="true" />
+  
   <xacro:include filename="$(find roverboard_description)/urdf/roverboard.urdf.xacro" />
-   
+
+ 
+  
 </robot>
