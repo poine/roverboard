@@ -54,6 +54,7 @@
   <exec_depend>message_runtime</exec_depend>
   <depend>roscpp</depend>
   <depend>odrive_cpp_sdk</depend>
+  <depend>roverboard_odrive</depend>
   <depend>async_comm</depend>
   
   <!-- The export tag contains other, unspecified, tags -->
