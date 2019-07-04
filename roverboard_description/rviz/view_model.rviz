@@ -4,7 +4,9 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
         - /Status1
+        - /RobotModel1
         - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 549
@@ -62,6 +64,21 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        _caster_ax1_carrier_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        _caster_ax2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        _caster_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         base_link:
           Alpha: 1
           Show Axes: false
@@ -83,7 +100,7 @@ Visualization Manager:
           Value: true
       Name: RobotModel
       Robot Description: roverboard_1/robot_description
-      TF Prefix: roverboard_1
+      TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -92,13 +109,21 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        roverboard_1/base_link:
+        _caster_ax1_carrier_link:
           Value: true
-        roverboard_1/chassis_link:
+        _caster_ax2_link:
           Value: true
-        roverboard_1/left_wheel_link:
+        _caster_wheel_link:
           Value: true
-        roverboard_1/right_wheel_link:
+        base_link:
+          Value: true
+        chassis_link:
+          Value: true
+        left_wheel_link:
+          Value: true
+        odom:
+          Value: true
+        right_wheel_link:
           Value: true
       Marker Scale: 0.30000001192092896
       Name: TF
@@ -106,19 +131,15 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        roverboard_1/base_link:
-          roverboard_1/chassis_link:
-            roverboard_1/left_wheel_link:
-              {}
-            roverboard_1/right_wheel_link:
-              {}
+        odom:
+          {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: roverboard_1/base_link
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -142,25 +163,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.8040765523910522
+      Distance: 1.515413522720337
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.06577301770448685
-        Y: -0.054257914423942566
-        Z: 0.013419492170214653
+        X: -0.18435458838939667
+        Y: 0.3256072402000427
+        Z: -0.00756181450560689
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5803987383842468
+      Pitch: 0.2903987467288971
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.7803968191146851
+      Yaw: 0.45539724826812744
     Saved: ~
 Window Geometry:
   Displays:
@@ -178,5 +199,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1200
-  X: 60
+  X: 29
   Y: 27
