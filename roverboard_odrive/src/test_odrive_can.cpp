@@ -1,56 +1,48 @@
 #include <iostream>
-#include <unistd.h>
-#include <string.h>
+#include <thread>
 
-#include <net/if.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
+#include "roverboard_odrive/roverboard_odrive_can.h"
 
-#include <linux/can.h>
-#include <linux/can/raw.h>
 
 int main(int argc, const char * argv[]) {
+  Odrive odrv = Odrive();
+  odrv.init();
+  odrv.reboot(); // for reseting watchdog
+  std::cerr << "odrive initialized" << std::endl;
+  //odrv.run();
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  //odrv.sendVelSetpoint(1, 50., 0.);
+  double vsps[2] = {-50., 0.};
+  double iffs[2] = {0., 0.};
+  double pos[2], vel[2];
+  double iqsp[2], iqm[2];
+  double duration = 5.; // seconds
+  double dt = 1./50;
+  int nb_loop = int(duration/dt);
+  double time[nb_loop];
+  auto start = std::chrono::steady_clock::now();
+  std::chrono::microseconds dt_chrono(int(dt*1e6));
+  for (auto i=0; i < nb_loop; i++) {
+    auto loop_start = std::chrono::steady_clock::now();
+    time[i] = std::chrono::duration_cast<std::chrono::milliseconds>(loop_start-start).count()*1e-3;
+    odrv.sendVelSetpoints(vsps, iffs);
+    odrv.readFeedback(pos, vel, iqsp, iqm);
+    std::cout << time[i] << " encoders: " << pos[0] << " " << pos[1] << " " << vel[0] << " " << vel[1] << " currents: " << iqsp[0] << " " << iqsp[1] << std::endl;
 
-    int s; /* can raw socket */
-    if ((s = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0) {
-      perror("socket");
-      return 1;
-    }
+    auto loop_end = std::chrono::steady_clock::now();
+    auto next_loop_time = start + (i+1)*dt_chrono;
+    auto sleep_time = next_loop_time - loop_end;
+    std::this_thread::sleep_for(sleep_time);
+  }
 
-    struct ifreq ifr;
-    strncpy(ifr.ifr_name, "can0", IFNAMSIZ - 1);
-    ifr.ifr_name[IFNAMSIZ - 1] = '\0';
-    ifr.ifr_ifindex = if_nametoindex(ifr.ifr_name);
-
-    struct sockaddr_can addr;
-    memset(&addr, 0, sizeof(addr));
-    addr.can_family = AF_CAN;
-    addr.can_ifindex = ifr.ifr_ifindex;
-    if (!ifr.ifr_ifindex) {
-      perror("if_nametoindex");
-      return 1;
-    }
+  odrv.sendVelSetpoint(1, 0, 0);
+  double vsps2[2] = {0., 0.};
+  double iffs2[2] = {0., 0.};
+  odrv.sendVelSetpoints(vsps2, iffs2);
  
-    setsockopt(s, SOL_CAN_RAW, CAN_RAW_FILTER, NULL, 0);
-    if (bind(s, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-      perror("bind");
-      return 1;
-    }
-
-    struct canfd_frame frame;
-    memset(&frame, 0, sizeof(frame)); /* init CAN FD frame, e.g. LEN = 0 */
-    frame.can_id = 0x37;// 0X17
-    frame.can_id |= CAN_RTR_FLAG;
-    
-
-
-    int required_mtu = CAN_MTU;
-    //int required_mtu = parse_canframe("017#R", &frame);//CAN_MTU;
-    if (write(s, &frame, required_mtu) != required_mtu) {
-      perror("write");
-      return 1;
-    }
-
-    close(s);
-    return 0;
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+  
+  std::cerr << "shuting down" << std::endl;
+  return 0;
 }
+
