@@ -12,7 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
   controller_interface
   controller_manager
   message_generation
-  odrive_cpp_sdk)
+  odrive_cpp_sdk
+  roverboard_odrive
+  socketcan_interface)
 
 find_package( async_comm REQUIRED)
 ## System dependencies are found with CMake's conventions
@@ -107,7 +109,7 @@ find_package( async_comm REQUIRED)
 catkin_package(
   INCLUDE_DIRS include 
 #  LIBRARIES roverboard_bbb
-  CATKIN_DEPENDS roscpp odrive_cpp_sdk
+  CATKIN_DEPENDS roscpp odrive_cpp_sdk roverboard_odrive
   DEPENDS async_comm
 )
 
@@ -129,6 +131,11 @@ include_directories(
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/roverboard_bbb.cpp
 # )
+# add_library(roverboard_odrive_ascii
+#   src/roverboard_odrive.cpp
+#   )
+# target_link_libraries(roverboard_odrive_ascii ${async_comm_LIBRARIES})
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -141,7 +148,8 @@ include_directories(
 ##add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp src/roverboard_odrive.cpp )
 add_executable(roverboard_hardware_interface_node
   src/roverboard_hardware_interface.cpp
-  src/roverboard_odrive.cpp
+  #src/roverboard_odrive.cpp
+  #/home/poine/work/overlay_ws/src/roverboard/roverboard_odrive/src/roverboard_odrive_can.cpp
   )
 
 ## Rename C++ executable without prefix
@@ -158,11 +166,12 @@ add_executable(roverboard_hardware_interface_node
 #target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES} ${async_comm_LIBRARIES}
 #)
-target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES})
+#target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES} ${roverboard_odrive_LIBRARIES})
+target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES} ${roverboard_odrive_LIBRARIES})
 
-
-add_executable(test_odrive src/test_odrive.cpp src/roverboard_odrive.cpp )
-target_link_libraries(test_odrive ${catkin_LIBRARIES} ${async_comm_LIBRARIES})
+# move to roverboard_odrive
+#add_executable(test_odrive_ascii src/test_odrive_ascii.cpp src/roverboard_odrive.cpp )
+#target_link_libraries(test_odrive_ascii ${catkin_LIBRARIES} ${async_comm_LIBRARIES})
 
 #############
 ## Install ##

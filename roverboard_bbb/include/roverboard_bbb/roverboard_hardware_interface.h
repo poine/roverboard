@@ -13,11 +13,15 @@
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/imu_sensor_interface.h>
 
+#ifdef ODRIVE_SERIAL_ASCII
 #include "roverboard_bbb/roverboard_odrive.h"
-
+#else
+#include "roverboard_odrive/roverboard_odrive_can.h"
+#endif
 
 #define NB_JOINTS 2
-#define RVHI_DT 1e-2
+//#define RVHI_DT 1e-2
+#define RVHI_DT 2e-2
 
 class RoverBoardHardwareInterface : public hardware_interface::RobotHW
 {
