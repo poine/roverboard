@@ -46,9 +46,15 @@
   <xacro:property name="high_definition_cwheel_visual" value="false" />
   <xacro:property name="high_definition_cwheel_plate_visual" value="false" />
   
-  <xacro:property name="use_eachine_camera" value="true" />
-  <xacro:property name="high_definition_camera_visual" value="true" />
-  <xacro:property name="use_hokuyo_lidar" value="true" />
+  <xacro:property name="use_camera" value="true" />
+  <xacro:property name="cam_hd_visual" value="true" />
+  <!-- <xacro:property name="cam_cl_to_ref_xyz" value="0.06 0 0.2" /> -->
+  <xacro:property name="cam_cl_to_ref_xyz" value="0.206   0.003  0.255" />
+  <xacro:property name="cam_look_down_deg" value="25." />
+  <!-- <xacro:property name="cam_cl_to_ref_rpy" value="0 ${cam_look_down_deg/180*pi}} 0" /> -->
+  <xacro:property name="cam_cl_to_ref_rpy" value="0.00791352  0.54611357  0.0022584" /> 
+  
+  <xacro:property name="use_hokuyo_lidar" value="false" />
   
   <xacro:include filename="$(find roverboard_description)/urdf/roverboard.urdf.xacro" />
 
