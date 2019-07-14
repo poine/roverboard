@@ -5,6 +5,7 @@
   <arg name="start_base_control" default="true" />
   <arg name="start_camera" default="true" />
   <arg name="start_fl_lane_detect" default="true" />
+  <arg name="start_fl_guidance" default="true" />
   
   <!-- Starts hardware -->
   <include file="$(find roverboard_control)/launch/hardware.launch">
@@ -38,7 +39,15 @@
       <param name="ref_frame" value="base_link_footprint"/>
     </node>
   </group>
-  
+
+  <!--  ****** Lane guidance *****  -->
+  <group if="$(arg start_fl_guidance)">
+    <node name="follow_line_guidance" pkg="two_d_guidance" type="fl_guidance_node.py" >
+      <param name="ref_frame" value="base_link_footprint"/>
+      <param name="cmd_topic" value="diff_drive_controller/cmd_vel"/>
+    </node>
+  </group>
+
   <!-- Starts a teleop node -->
   <include file="$(find roverboard_control)/launch/teleop.launch">
     <arg name="robot_name" value="$(arg robot_name)" />
