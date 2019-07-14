@@ -7,11 +7,12 @@
 
 int main(int argc, const char * argv[]) {
 
-  Odrive od;
+  OdriveAscii od;
   od.init();
   double enc[2], enc_vel[2];
-  double duration = 5.; // seconds
-  double dt = 1./50;
+  double iqsp[2], iqm[2];
+  double duration = 5., dt=1./50; // seconds
+  //double dt = 1./50;
   int nb_loop = int(duration/dt);
   double time[nb_loop];
   auto start = std::chrono::steady_clock::now();
@@ -19,8 +20,12 @@ int main(int argc, const char * argv[]) {
   for (uint8_t i = 0; i < nb_loop; i++) {
     auto loop_start = std::chrono::steady_clock::now();
     time[i] = std::chrono::duration_cast<std::chrono::milliseconds>(loop_start-start).count()*1e-3;
-    od.send_velocity_setpoint(90, 0);
-    od.read_feedback(enc, enc_vel);
+    //od.send_velocity_setpoint(0, 90);
+    double vsps[2] = {90., 90.}, iq_ff[2] = {0., 0.};
+    od.sendVelSetpoints(vsps, iq_ff);
+
+    od.readFeedback(enc, enc_vel, iqsp, iqm);
+    //od.read_feedback(enc, enc_vel);
     std::cout << i*dt <<  " " << time[i] <<
       " encoders: " << enc[0] << " " << enc[1] << " ticks vel: " <<
       enc_vel[0] << " " << enc_vel[1] << " ticks/s" << std::endl;
@@ -31,7 +36,9 @@ int main(int argc, const char * argv[]) {
     auto sleep_time = next_loop_time - loop_end;
     std::this_thread::sleep_for(sleep_time);
   }
-  od.send_velocity_setpoint(0, 0);
+  //od.send_velocity_setpoint(0, 0);
+  double vsps[2] = {0., 0.}, iq_ff[2] = {0., 0.};
+  od.sendVelSetpoints(vsps, iq_ff);
   return 0;
   
 }

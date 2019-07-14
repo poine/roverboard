@@ -35,7 +35,7 @@ int main(int argc, const char * argv[]) {
     std::this_thread::sleep_for(sleep_time);
   }
 
-  odrv.sendVelSetpoint(1, 0, 0);
+  //odrv.sendVelSetpoint(1, 0, 0);
   double vsps2[2] = {0., 0.};
   double iffs2[2] = {0., 0.};
   odrv.sendVelSetpoints(vsps2, iffs2);

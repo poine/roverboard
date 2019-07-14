@@ -1,3 +1,6 @@
+
+#define ODRIVE_SERIAL_ASCII
+
 #include <roverboard_bbb/roverboard_hardware_interface.h>
 #include <controller_manager/controller_manager.h>
 
@@ -50,7 +53,7 @@ bool RoverBoardHardwareInterface::shutdown() {
  *
  *
  *******************************************************************************/
-#define RAD_PER_TICK (2*M_PI/90)
+#define RAD_PER_TICK (2*M_PI/84)  // Encoder resolution FIXME, make that configurable
 void RoverBoardHardwareInterface::read(const ros::Time& now) {
   double enc[2], enc_vel[2];
   double iqsp[2], iqm[2];
@@ -67,16 +70,13 @@ void RoverBoardHardwareInterface::read(const ros::Time& now) {
  *******************************************************************************/
 #define TICK_PER_RAD (1./RAD_PER_TICK)
 void RoverBoardHardwareInterface::write() {
+  
   double sp_tps_left = joint_velocity_command_[0]*TICK_PER_RAD*ODRV_LW_POL;
   double sp_tps_right = joint_velocity_command_[1]*TICK_PER_RAD*ODRV_RW_POL;
-  double current_ff_left = 0., current_ff_right = 0.;
-#ifdef ODRIVE_SERIAL_ASCII
-  od_.send_velocity_setpoint(sp_tps_right, sp_tps_left, current_ff_right, current_ff_left);
-#else
   double vsps[2] = {sp_tps_right, sp_tps_left};
-  double iffs[2] = {current_ff_right, current_ff_left};
+  double iffs[2] = {0., 0.};
   od_.sendVelSetpoints(vsps, iffs);
-#endif
+
 }
 
 

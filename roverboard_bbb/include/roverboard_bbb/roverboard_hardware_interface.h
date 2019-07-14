@@ -14,14 +14,16 @@
 #include <hardware_interface/imu_sensor_interface.h>
 
 #ifdef ODRIVE_SERIAL_ASCII
-#include "roverboard_bbb/roverboard_odrive.h"
+#warning "hardware interface using odrive serial ascii protocol"
+#include "roverboard_odrive/roverboard_odrive_ascii.h"
 #else
+#warning "hardware interface using odrive can protocol"
 #include "roverboard_odrive/roverboard_odrive_can.h"
 #endif
 
 #define NB_JOINTS 2
 //#define RVHI_DT 1e-2
-#define RVHI_DT 2e-2
+#define RVHI_DT 2e-2  // 50Hz
 
 class RoverBoardHardwareInterface : public hardware_interface::RobotHW
 {
@@ -45,8 +47,9 @@ class RoverBoardHardwareInterface : public hardware_interface::RobotHW
   // for accepting joints setpoints
   //hardware_interface::EffortJointInterface   ej_interface_;
   hardware_interface::VelocityJointInterface vj_interface_;
-  
-  Odrive od_;
+
+  // Odrive motor controller
+  OdriveAscii od_;
 
   
 };

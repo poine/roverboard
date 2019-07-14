@@ -4,7 +4,7 @@
   <arg name="robot_name" default="pierrette"/>
   <arg name="run_vanilla_control" default="false"/>
   
-  <rosparam command="load" file="$(find roverboard_bbb)/config/teleop.yaml" />
+  <rosparam command="load" file="$(find roverboard_control)/cfg/teleop_$(arg robot_name).yaml" />
   
   <node pkg="joy" type="joy_node" name="joy_node" />
 

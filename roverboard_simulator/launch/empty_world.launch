@@ -32,6 +32,7 @@
   <group if="$(arg start_base_control)">
     <include file="$(find roverboard_control)/launch/base_control.launch">
       <arg name="robot_name" value="$(arg robot_name)" />
+      <arg name="use_robot_namespace" value="true" />
     </include>
   </group>
 

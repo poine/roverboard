@@ -9,13 +9,17 @@
 
 enum Status { iddle, waiting_fb_0, waiting_fb_1};
 
-class Odrive {
+class OdriveAscii {
  public:
-  Odrive();
-  ~Odrive();
+  OdriveAscii();
+  ~OdriveAscii();
   bool init();
-  void send_velocity_setpoint(int m1, int m2);
-  void read_feedback(double* enc, double* enc_vel);
+  //void send_velocity_setpoint(int m1, int m2);
+  //void read_feedback(double* enc, double* enc_vel);
+  void readFeedback(double* enc, double* enc_vel, double* iq_sp, double* iq_meas);
+  void sendVelSetpoints(double* vsps, double* iq_ff);
+  void reboot();
+  
  private:
   async_comm::Serial serial_;
   uint8_t buf_[ODRIVE_BUF_LEN];
@@ -27,5 +31,7 @@ class Odrive {
   std::mutex enc_mutex_;
   double enc_[ODRIVE_AXIS_NB];
   double enc_vel_[ODRIVE_AXIS_NB];
+  double iq_sp_[ODRIVE_AXIS_NB];
+  double iq_meas_[ODRIVE_AXIS_NB];
 };
 #endif // ROVERBOARD_BBB__ODRIVE_H

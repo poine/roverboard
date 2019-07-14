@@ -60,7 +60,7 @@
   <!-- Camera -->
   <xacro:include filename="$(find common_robots)/urdf/sensors.urdf.xacro" />
   <xacro:if value="${use_camera}">
-    <xacro:cs_camera_eachine cam_name="camera1" origin_ref_frame="base_link_footprint">
+    <xacro:cs_camera_eachine cam_name="camera_road_front" origin_ref_frame="base_link_footprint">
       <origin xyz="${cam_cl_to_ref_xyz}" rpy="${cam_cl_to_ref_rpy}" />
     </xacro:cs_camera_eachine>
   </xacro:if>

@@ -3,15 +3,28 @@
   <!-- Starts control -->
   <arg name="robot_name" default="pierrette" />
 
+  <arg name="use_robot_namespace" default="false"/>
   <arg name="publish_robot_state" default="false"/>
+  
 
-  <!-- load control configuration -->
-  <rosparam command="load" file="$(find roverboard_control)/cfg/base_control_$(arg robot_name).yaml" ns="$(arg robot_name)"/>
+  <!-- Namespace version -->
+  <group if="$(arg use_robot_namespace)">
+    <!-- load control configuration -->
+    <rosparam command="load" file="$(find roverboard_control)/cfg/base_control_$(arg robot_name).yaml" ns="$(arg robot_name)"/>
+    <!-- load controllers -->
+    <rosparam param="$(arg robot_name)/diff_drive_controller/base_frame_id" subst_value="True">$(arg robot_name)/base_link</rosparam>
+    <rosparam param="$(arg robot_name)/diff_drive_controller/odom_frame_id" subst_value="True">$(arg robot_name)/odom</rosparam>
+    <node name="base_controller_spawner" pkg="controller_manager" type="spawner" ns="$(arg robot_name)" args="joint_publisher diff_drive_controller"/>
+  </group>
 
-  <!-- load controllers -->
-  <rosparam param="$(arg robot_name)/diff_drive_controller/base_frame_id" subst_value="True">$(arg robot_name)/base_link</rosparam>
-  <rosparam param="$(arg robot_name)/diff_drive_controller/odom_frame_id" subst_value="True">$(arg robot_name)/odom</rosparam>
-  <node name="base_controller_spawner" pkg="controller_manager" type="spawner" ns="$(arg robot_name)" args="joint_publisher diff_drive_controller"/>
+  <!-- no Namespace version -->
+  <group unless="$(arg use_robot_namespace)">
+    <!-- load control configuration -->
+    <rosparam command="load" file="$(find roverboard_control)/cfg/base_control_$(arg robot_name).yaml" />
+    <!-- load controllers -->
+    <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="joint_publisher diff_drive_controller"/>
+  
+  </group>
 
   <!-- publish robot state -->
   <group if="$(arg publish_robot_state)">

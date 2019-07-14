@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="robot_name" default="caroline" />
+  
+  <arg name="start_base_control" default="true" />
+  <arg name="start_camera" default="true" />
+  <arg name="start_fl_lane_detect" default="true" />
+  
+  <!-- Starts hardware -->
+  <include file="$(find roverboard_control)/launch/hardware.launch">
+    <arg name="robot_name" value="$(arg robot_name)" />
+  </include>
+  
+  <!-- <node pkg="roverboard_odrive" type="test_odrive_ascii.py" name="odrive_node" /> -->
+  
+  <!--  base control (joint publisher, diff drive controller) -->
+  <group if="$(arg start_base_control)">
+    <include file="$(find roverboard_control)/launch/base_control.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+    </include>
+  </group>
+
+  <!-- Starts description -->
+  <include file="$(find roverboard_description)/launch/description.launch">
+    <arg name="robot_name" value="$(arg robot_name)" />
+  </include>
+  
+  <!-- Starts camera -->
+  <group if="$(arg start_camera)">
+    <include file="$(find roverboard_caroline)/launch/camera_road_front.launch">
+    </include>
+  </group>
+
+  <!--  ****** Lane detection *****  -->
+  <group if="$(arg start_fl_lane_detect)">
+    <node name="follow_line_lane_detector" pkg="two_d_guidance" type="fl_lane_detect_node.py">
+      <param name="cameras" value="camera_road_front"/>
+      <param name="ref_frame" value="base_link_footprint"/>
+    </node>
+  </group>
+  
+  <!-- Starts a teleop node -->
+  <include file="$(find roverboard_control)/launch/teleop.launch">
+    <arg name="robot_name" value="$(arg robot_name)" />
+  </include>
+  
+  
+</launch>
