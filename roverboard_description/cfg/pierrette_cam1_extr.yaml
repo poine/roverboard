@@ -1,0 +1,4 @@
+# extrinsics (base footprint to camera optical frame transform)
+ref_to_camo_t: 0.00039367,  0.3255541,  -0.04368782
+ref_to_camo_q: 0.6194402,  -0.61317113,  0.34761617,  0.34565589
+

@@ -1,0 +1,42 @@
+#
+#
+# /home/poine/work/robot_data/caroline/floor_tiles_z_01.png
+# tiles are 60cm square, baselink footprint is aligned on a floor tile corner
+#
+
+1_left_bottom:
+  img:   [56, 174]       # coordinates on image
+  world: [0.6, 0.6, 0]   # coordinates on local floor plane
+
+2_right_bottom:
+  img: [720, 176]   
+  world:  [0.6, -0.6, 0]    
+
+3_left_top:
+  img: [245, 78]
+  world:  [1.8, 0.6, 0]
+
+4_right_top:
+  img: [529, 79]
+  world:  [1.8, -0.6, 0]
+
+5_left_middle:
+  img: [184, 105]
+  world: [1.2, 0.6, 0]
+
+6_right_middle:
+  img_d: [913, 293]
+  img: [592, 103]
+  world: [1.2, -0.6, 0]
+  
+7_center_top:
+  img: [388, 71]
+  world:  [1.8, 0., 0]
+
+8_bottom_center:
+  img: [388, 151]
+  world:  [0.6, 0., 0]
+
+9_middle_center:
+  img: [388, 89]
+  world:  [1.2, 0., 0]

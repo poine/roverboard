@@ -29,9 +29,10 @@
   </gazebo>
 
   <!-- Camera -->
-  <xacro:if value="${use_eachine_camera}">
-    <xacro:gazebo_rpi_camera cam_name="camera1"/>
+  <xacro:if value="${use_camera}">
+    <xacro:gazebo_rpi_camera cam_name="${cam_name}"/>
   </xacro:if>
+  
   <!-- Lidar -->
   <xacro:if value="${use_hokuyo_lidar}">
     <xacro:gazebo_hokuyo laser_name="laser1"/>
