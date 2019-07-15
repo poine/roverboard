@@ -73,7 +73,7 @@ void RoverBoardHardwareInterface::write() {
   
   double sp_tps_left = joint_velocity_command_[0]*TICK_PER_RAD*ODRV_LW_POL;
   double sp_tps_right = joint_velocity_command_[1]*TICK_PER_RAD*ODRV_RW_POL;
-  double vsps[2] = {sp_tps_right, sp_tps_left};
+  double vsps[2] = {sp_tps_left, sp_tps_right};
   double iffs[2] = {0., 0.};
   od_.sendVelSetpoints(vsps, iffs);
 

@@ -59,9 +59,10 @@ class RoverBoardHardwareInterface : public hardware_interface::RobotHW
 // odrive channel 1 left wheel, negative
 //
 
-#define ODRV_LW_CHAN 1
-#define ODRV_RW_CHAN 0
-#define ODRV_LW_POL -1.
-#define ODRV_RW_POL  1.
+// caroline
+#define ODRV_LW_CHAN 0
+#define ODRV_RW_CHAN 1
+#define ODRV_LW_POL  1.
+#define ODRV_RW_POL -1.
 
 #endif // ROVERBOARD_BBB__ROVERBOARD_HARDWARE_INTERFACE_H
