@@ -3,13 +3,17 @@
   <arg name="robot_name" default="caroline" />
   
   <arg name="start_base_control" default="true" />
+  <arg name="start_description" default="true" />
   <arg name="start_camera" default="true" />
   <arg name="start_fl_lane_detect" default="true" />
   <arg name="start_fl_guidance" default="true" />
+  <arg name="start_teleop" default="true" />
   
   <!-- Starts hardware -->
   <include file="$(find roverboard_control)/launch/hardware.launch">
     <arg name="robot_name" value="$(arg robot_name)" />
+    <arg name="odrive_interface_type" default="1" /> <!-- 0->ASCII, 1->CAN -->
+    <arg name="hardware_interface_dt" default="0.02" />
   </include>
   
   <!-- <node pkg="roverboard_odrive" type="test_odrive_ascii.py" name="odrive_node" /> -->
@@ -22,9 +26,11 @@
   </group>
 
   <!-- Starts description -->
-  <include file="$(find roverboard_description)/launch/description.launch">
-    <arg name="robot_name" value="$(arg robot_name)" />
-  </include>
+  <group if="$(arg start_description)">
+    <include file="$(find roverboard_description)/launch/description.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+    </include>
+  </group>
   
   <!-- Starts camera -->
   <group if="$(arg start_camera)">
@@ -53,9 +59,10 @@
   </group>
 
   <!-- Starts a teleop node -->
-  <include file="$(find roverboard_control)/launch/teleop.launch">
-    <arg name="robot_name" value="$(arg robot_name)" />
-  </include>
-  
+  <group if="$(arg start_teleop)">
+    <include file="$(find roverboard_control)/launch/teleop.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+    </include>
+  </group>
   
 </launch>

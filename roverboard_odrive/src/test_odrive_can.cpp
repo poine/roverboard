@@ -5,7 +5,7 @@
 
 
 int main(int argc, const char * argv[]) {
-  Odrive odrv = Odrive();
+  OdriveCAN odrv = OdriveCAN();
   odrv.init();
   odrv.reboot(); // for reseting watchdog
   std::cerr << "odrive initialized" << std::endl;

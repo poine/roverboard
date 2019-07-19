@@ -12,7 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   controller_interface
   controller_manager
   message_generation
-  odrive_cpp_sdk
   roverboard_odrive
   socketcan_interface)
 
@@ -109,7 +108,7 @@ find_package( async_comm REQUIRED)
 catkin_package(
   INCLUDE_DIRS include 
 #  LIBRARIES roverboard_bbb
-  CATKIN_DEPENDS roscpp odrive_cpp_sdk roverboard_odrive
+  CATKIN_DEPENDS roscpp roverboard_odrive
   DEPENDS async_comm
 )
 
@@ -122,8 +121,6 @@ catkin_package(
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
- ${odrive_cpp_sdk_INCLUDE_DIRS}
- /home/poine/work/overlay_ws/src/odrive_cpp_sdk/include/odrive_cpp_sdk/
  ${async_comm_INCLUDE_DIRS}
 )
 
@@ -146,11 +143,11 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 ##add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp src/roverboard_odrive.cpp )
-add_executable(roverboard_hardware_interface_node
-  src/roverboard_hardware_interface.cpp
+##add_executable(roverboard_hardware_interface_node
+##  src/roverboard_hardware_interface.cpp
   #src/roverboard_odrive.cpp
   #/home/poine/work/overlay_ws/src/roverboard/roverboard_odrive/src/roverboard_odrive_can.cpp
-  )
+##  )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -167,7 +164,7 @@ add_executable(roverboard_hardware_interface_node
 #   ${catkin_LIBRARIES} ${async_comm_LIBRARIES}
 #)
 #target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES} ${roverboard_odrive_LIBRARIES})
-target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES} ${roverboard_odrive_LIBRARIES})
+###target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES} ${roverboard_odrive_LIBRARIES})
 
 # move to roverboard_odrive
 #add_executable(test_odrive_ascii src/test_odrive_ascii.cpp src/roverboard_odrive.cpp )

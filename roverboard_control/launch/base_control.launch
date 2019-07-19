@@ -20,9 +20,12 @@
   <!-- no Namespace version -->
   <group unless="$(arg use_robot_namespace)">
     <!-- load control configuration -->
-    <rosparam command="load" file="$(find roverboard_control)/cfg/base_control_$(arg robot_name).yaml" />
+    <rosparam command="load" file="$(find roverboard_control)/cfg/base_control_$(arg robot_name).yaml" ns="$(arg robot_name)_robot_hardware"/>
     <!-- load controllers -->
-    <node name="base_controller_spawner" pkg="controller_manager" type="spawner" args="joint_publisher diff_drive_controller"/>
+    <node name="base_controller_spawner" pkg="controller_manager" type="spawner"
+	  args="--namespace=/$(arg robot_name)_robot_hardware
+		joint_publisher
+		diff_drive_controller"/>
   </group>
 
   <!-- publish robot state -->

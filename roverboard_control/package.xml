@@ -57,7 +57,8 @@
   <depend>realtime_tools</depend>
   <depend>tf</depend>
   <depend>urdf</depend>
-
+  <depend>roverboard_odrive</depend>
+  
   <test_depend>controller_manager</test_depend>
   <test_depend>rosgraph_msgs</test_depend>
   <test_depend>rostest</test_depend>

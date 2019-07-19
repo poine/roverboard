@@ -10,29 +10,30 @@
 #define REBOOT_ODRIVE         0x016
 #define GET_VBUS_VOLTAGE      0x017
 
+//#define DEBUG__
 #ifdef DEBUG__
 #define DEBUG_(_x) _x
 #else
 #define DEBUG_(_x)
 #endif
 
-Odrive::Odrive() {
-  DEBUG_(std::cerr << "in Odrive::Odrive()" << std::endl;)
+OdriveCAN::OdriveCAN() {
+  DEBUG_(std::cerr << "in OdriveCAN::OdriveCAN()" << std::endl;)
   g_driver_ = std::make_shared<can::ThreadedSocketCANInterface> ();
   enc_mutex_ = new std::mutex(); // FIXME: make C++42 do that automagically
 }
 
-Odrive::~Odrive() {
-  DEBUG_(std::cerr << "in Odrive::~Odrive()" << std::endl;)
+OdriveCAN::~OdriveCAN() {
+  DEBUG_(std::cerr << "in OdriveCAN::~Odrive()" << std::endl;)
   g_driver_->shutdown();
   g_driver_.reset();
   delete(enc_mutex_);  // FIXME: See above
 }
 
-bool Odrive::init() {
-  DEBUG_(std::cerr << "in Odrive::init()" << std::endl;)
-  msg_listener_ = g_driver_->createMsgListener(can::CommInterface::FrameDelegate(this, &Odrive::msgCallback));
-  state_listener_ = g_driver_->createStateListener(can::StateInterface::StateDelegate(this, &Odrive::stateCallback));
+bool OdriveCAN::init() {
+  DEBUG_(std::cerr << "in OdriveCAN::init()" << std::endl;)
+  msg_listener_ = g_driver_->createMsgListener(can::CommInterface::FrameDelegate(this, &OdriveCAN::msgCallback));
+  state_listener_ = g_driver_->createStateListener(can::StateInterface::StateDelegate(this, &OdriveCAN::stateCallback));
   
   if(!g_driver_->init("can1", false)){
     stateCallback(g_driver_->getState());
@@ -42,7 +43,7 @@ bool Odrive::init() {
 }
 
 
-void Odrive::readFeedback(double* enc, double* enc_vel, double* iq_sp, double* iq_meas) {
+void OdriveCAN::readFeedback(double* enc, double* enc_vel, double* iq_sp, double* iq_meas) {
   // Send request for state variables
   reqEncoder(0);
   reqEncoder(1);
@@ -59,7 +60,7 @@ void Odrive::readFeedback(double* enc, double* enc_vel, double* iq_sp, double* i
 
 }
 
-void Odrive::sendVelSetpoints(double* vsps, double* iq_ff) {
+void OdriveCAN::sendVelSetpoints(double* vsps, double* iq_ff) {
   for (auto i=0; i<ODRIVE_AXIS_NB; i++)
     sendVelSetpoint(i, vsps[i], iq_ff[i]);
 }
@@ -69,7 +70,7 @@ void Odrive::sendVelSetpoints(double* vsps, double* iq_ff) {
 
 
 
-void Odrive::sendVelSetpoint(int node_id, float vsp, float iff) {
+void OdriveCAN::sendVelSetpoint(int node_id, float vsp, float iff) {
   can::Frame f;
   f.is_extended = false;
   f.is_rtr = false;
@@ -99,12 +100,12 @@ void Odrive::sendVelSetpoint(int node_id, float vsp, float iff) {
 }
 
 
-void  Odrive::reqEncoder(int node_id) { sendCANFrame(true, node_id, GET_ENCODER_ESTIMATES, 0, NULL);}
-void  Odrive::reqIq(int node_id) { sendCANFrame(true, node_id, GET_IQ, 0, NULL);}
-void Odrive::reboot() {sendCANFrame(false, 0, REBOOT_ODRIVE, 0, NULL);}
+void  OdriveCAN::reqEncoder(int node_id) { sendCANFrame(true, node_id, GET_ENCODER_ESTIMATES, 0, NULL);}
+void  OdriveCAN::reqIq(int node_id) { sendCANFrame(true, node_id, GET_IQ, 0, NULL);}
+void OdriveCAN::reboot() {sendCANFrame(false, 0, REBOOT_ODRIVE, 0, NULL);}
 
 
-void Odrive::sendCANFrame(bool rtr, int node_id, int msg_id, int payload_len, void* payload) {
+void OdriveCAN::sendCANFrame(bool rtr, int node_id, int msg_id, int payload_len, void* payload) {
   can::Frame f;
   f.is_extended = false;
   f.is_rtr = rtr;
@@ -120,7 +121,7 @@ void Odrive::sendCANFrame(bool rtr, int node_id, int msg_id, int payload_len, vo
 
 
 
-void Odrive::printCanFrame(const can::Frame &f) {
+void OdriveCAN::printCanFrame(const can::Frame &f) {
   if(f.is_error){
     std::cout << "E " << std::hex << f.id << std::dec;
   }else if(f.is_extended){
@@ -143,7 +144,7 @@ void Odrive::printCanFrame(const can::Frame &f) {
   std::cout << std::dec << std::endl;
 }
 
-void Odrive::msgCallback(const can::Frame &f) {
+void OdriveCAN::msgCallback(const can::Frame &f) {
   DEBUG_(std::cerr << "in Odrive:frame_cbk_()" << std::endl;)
   unsigned int node_id = f.id >> 5;
   unsigned int msg_id  = f.id & 0x1F;
@@ -151,8 +152,7 @@ void Odrive::msgCallback(const can::Frame &f) {
   case ODRIVE_HEARTBEAT:
     break;
   case GET_ENCODER_ESTIMATES: {
-    DEBUG_(for(auto i=0; i<f.dlc; ++i)\\
-	     std::cout << std::hex << " " << (int) f.data[i];)
+    DEBUG_(for(auto i=0; i<f.dlc; ++i) std::cout << std::hex << " " << (int) f.data[i];)
     float pos, vel;
     memcpy(&pos, &(f.data[0]), sizeof(float));
     memcpy(&vel, &(f.data[4]), sizeof(float));
@@ -183,7 +183,7 @@ void Odrive::msgCallback(const can::Frame &f) {
   
 }
 
-void Odrive::stateCallback(const can::State & s) {
+void OdriveCAN::stateCallback(const can::State & s) {
   //std::cerr << "stateCallback" << std::endl;
   std::string err;
   g_driver_->translateError(s.internal_error,err);

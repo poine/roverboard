@@ -13,22 +13,24 @@
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/imu_sensor_interface.h>
 
-#ifdef ODRIVE_SERIAL_ASCII
-#warning "hardware interface using odrive serial ascii protocol"
+
+//#ifdef ODRIVE_SERIAL_ASCII
+//#warning "hardware interface using odrive serial ascii protocol"
 #include "roverboard_odrive/roverboard_odrive_ascii.h"
-#else
-#warning "hardware interface using odrive can protocol"
+//#else
+//#warning "hardware interface using odrive can protocol"
 #include "roverboard_odrive/roverboard_odrive_can.h"
-#endif
+#include "roverboard_odrive/roverboard_odrive.h"
+//#endif
 
 #define NB_JOINTS 2
-//#define RVHI_DT 1e-2
-#define RVHI_DT 2e-2  // 50Hz
+//#define RVHI_DT 1e-2  // 100hz
+//#define RVHI_DT 2e-2  // 50hz
 
 class RoverBoardHardwareInterface : public hardware_interface::RobotHW
 {
  public:
-  RoverBoardHardwareInterface();
+  RoverBoardHardwareInterface(int odrive_interface_type);
   virtual ~RoverBoardHardwareInterface();
   bool start(const ros::Time& time);
   void read(const ros::Time& time);
@@ -49,8 +51,10 @@ class RoverBoardHardwareInterface : public hardware_interface::RobotHW
   hardware_interface::VelocityJointInterface vj_interface_;
 
   // Odrive motor controller
-  OdriveAscii od_;
-
+  //OdriveAscii od_;
+  //OdriveAscii* oda_;
+  //OdriveCAN*   odc_;
+  Odrive* od_;
   
 };
 
