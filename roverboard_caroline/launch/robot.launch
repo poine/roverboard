@@ -9,30 +9,30 @@
   <arg name="start_fl_guidance" default="true" />
   <arg name="start_teleop" default="true" />
   
-  <!-- Starts hardware -->
+  <!-- ****** Starts hardware ****** -->
   <include file="$(find roverboard_control)/launch/hardware.launch">
     <arg name="robot_name" value="$(arg robot_name)" />
-    <arg name="odrive_interface_type" default="1" /> <!-- 0->ASCII, 1->CAN -->
+    <arg name="odrive_interface_type" default="0" />     <!-- 0->ASCII, 1->CAN -->
     <arg name="hardware_interface_dt" default="0.02" />
   </include>
   
   <!-- <node pkg="roverboard_odrive" type="test_odrive_ascii.py" name="odrive_node" /> -->
   
-  <!--  base control (joint publisher, diff drive controller) -->
+  <!--  ****** Starts base control (joint publisher, diff drive controller) ****** -->
   <group if="$(arg start_base_control)">
     <include file="$(find roverboard_control)/launch/base_control.launch">
       <arg name="robot_name" value="$(arg robot_name)" />
     </include>
   </group>
 
-  <!-- Starts description -->
+  <!-- ****** Starts description ****** -->
   <group if="$(arg start_description)">
     <include file="$(find roverboard_description)/launch/description.launch">
       <arg name="robot_name" value="$(arg robot_name)" />
     </include>
   </group>
   
-  <!-- Starts camera -->
+  <!-- ****** Starts camera ****** -->
   <group if="$(arg start_camera)">
     <include file="$(find roverboard_caroline)/launch/camera_road_front.launch">
     </include>
@@ -49,16 +49,16 @@
 
   <!--  ****** Lane guidance *****  -->
   <group if="$(arg start_fl_guidance)">
-    <node name="follow_line_guidance" pkg="two_d_guidance" type="fl_guidance_node.py" >
+    <node name="follow_line_guidance" pkg="two_d_guidance" type="fl_guidance_node.py" output="screen">
       <param name="ref_frame" value="base_link_footprint"/>
-      <param name="cmd_topic" value="diff_drive_controller/cmd_vel"/>
-      <param name="guidance_mode" value="iddle"/>
+      <param name="cmd_topic" value="$(arg robot_name)_robot_hardware/diff_drive_controller/cmd_vel"/>
+      <param name="guidance_mode" value="0"/>
       <param name="vel_sp" value="0.5"/>
       <param name="lookahead" value="0.6"/>
     </node>
   </group>
 
-  <!-- Starts a teleop node -->
+  <!-- ****** Starts a teleop node ****** -->
   <group if="$(arg start_teleop)">
     <include file="$(find roverboard_control)/launch/teleop.launch">
       <arg name="robot_name" value="$(arg robot_name)" />
