@@ -1,21 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(roverboard_bbb)
+project(roverboard_pierrette)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  controller_interface
-  controller_manager
-  message_generation
-  roverboard_odrive
-  socketcan_interface)
+find_package(catkin REQUIRED)
 
-find_package( async_comm REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -106,10 +99,10 @@ find_package( async_comm REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include 
-#  LIBRARIES roverboard_bbb
-  CATKIN_DEPENDS roscpp roverboard_odrive
-  DEPENDS async_comm
+#  INCLUDE_DIRS include
+#  LIBRARIES roverboard_pierrette
+#  CATKIN_DEPENDS other_catkin_pkg
+#  DEPENDS system_lib
 )
 
 ###########
@@ -119,20 +112,14 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include
- ${catkin_INCLUDE_DIRS}
- ${async_comm_INCLUDE_DIRS}
+# include
+# ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/roverboard_bbb.cpp
+#   src/${PROJECT_NAME}/roverboard_pierrette.cpp
 # )
-# add_library(roverboard_odrive_ascii
-#   src/roverboard_odrive.cpp
-#   )
-# target_link_libraries(roverboard_odrive_ascii ${async_comm_LIBRARIES})
-
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -142,12 +129,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-##add_executable(${PROJECT_NAME}_node src/roverboard_bbb_node.cpp src/roverboard_odrive.cpp )
-##add_executable(roverboard_hardware_interface_node
-##  src/roverboard_hardware_interface.cpp
-  #src/roverboard_odrive.cpp
-  #/home/poine/work/overlay_ws/src/roverboard/roverboard_odrive/src/roverboard_odrive_can.cpp
-##  )
+# add_executable(${PROJECT_NAME}_node src/roverboard_pierrette_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -157,18 +139,12 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-#add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-#target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES} ${async_comm_LIBRARIES}
-#)
-#target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES} ${roverboard_odrive_LIBRARIES})
-###target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES} ${roverboard_odrive_LIBRARIES})
-
-# move to roverboard_odrive
-#add_executable(test_odrive_ascii src/test_odrive_ascii.cpp src/roverboard_odrive.cpp )
-#target_link_libraries(test_odrive_ascii ${catkin_LIBRARIES} ${async_comm_LIBRARIES})
+# target_link_libraries(${PROJECT_NAME}_node
+#   ${catkin_LIBRARIES}
+# )
 
 #############
 ## Install ##
@@ -210,7 +186,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_roverboard_bbb.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_roverboard_pierrette.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

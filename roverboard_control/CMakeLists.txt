@@ -6,13 +6,16 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 find_package(catkin REQUIRED COMPONENTS
+    roscpp
     controller_interface
+    controller_manager
     control_msgs
     dynamic_reconfigure
     nav_msgs
     realtime_tools
     tf
     urdf
+    roverboard_odrive
 )
 
 generate_dynamic_reconfigure_options(cfg/DiffDriveController.cfg)
@@ -36,6 +39,11 @@ include_directories(SYSTEM
 add_library(${PROJECT_NAME} src/diff_drive_controller.cpp src/odometry.cpp src/speed_limiter.cpp)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+
+add_executable(roverboard_hardware_interface_node
+  src/roverboard_hardware_interface.cpp
+  )
+target_link_libraries(roverboard_hardware_interface_node ${catkin_LIBRARIES} ${async_comm_LIBRARIES} ${roverboard_odrive_LIBRARIES})
 
 install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})

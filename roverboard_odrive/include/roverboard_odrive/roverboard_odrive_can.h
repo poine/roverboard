@@ -5,14 +5,14 @@
 #include <socketcan_interface/threading.h>
 #include <mutex>
 
-#define ODRIVE_AXIS_NB 2
+#include "roverboard_odrive/roverboard_odrive.h"
 
-class Odrive {
+
+class OdriveCAN : public Odrive {
  public:
-  Odrive();
-  ~Odrive();
+  OdriveCAN();
+  ~OdriveCAN();
   bool init();
-  //void run();
   void sendCANFrame(bool rtr, int node_id, int msg_id, int payload_len, void* payload);
   void printCanFrame(const can::Frame &f);
   void readFeedback(double* enc, double* enc_vel, double* iq_sp, double* iq_meas);

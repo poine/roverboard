@@ -1,15 +1,13 @@
 
-#define ODRIVE_SERIAL_ASCII
-
-#include <roverboard_bbb/roverboard_hardware_interface.h>
 #include <controller_manager/controller_manager.h>
+
+#include <roverboard_control/roverboard_hardware_interface.h>
 
 #define __NAME "roverboard_hardware_interface"
 const std::string joint_name_[NB_JOINTS] = {"left_wheel_joint","right_wheel_joint"};
 
-RoverBoardHardwareInterface::RoverBoardHardwareInterface() {
-  ROS_INFO_STREAM_NAMED(__NAME, "in RoverBoardHardwareInterface::RoverBoardHardwareInterface...");
-
+RoverBoardHardwareInterface::RoverBoardHardwareInterface(int odrive_interface_type) {
+  ROS_INFO_STREAM_NAMED(__NAME, "In RoverBoardHardwareInterface::RoverBoardHardwareInterface...");
   ROS_INFO_STREAM_NAMED(__NAME, "Registering interfaces");
   // register joints
   for (int i=0; i<NB_JOINTS; i++) {
@@ -22,8 +20,14 @@ RoverBoardHardwareInterface::RoverBoardHardwareInterface() {
   }
   registerInterface(&js_interface_);
   registerInterface(&vj_interface_);
+  switch (odrive_interface_type) {
+      case 0:
+	od_ = new OdriveAscii(); break;
+      case 1:
+	od_ = new OdriveCAN(); break;
+    }  
   // start odrive
-  od_.init();
+  od_->init();
 }
 
 RoverBoardHardwareInterface::~RoverBoardHardwareInterface() {
@@ -35,7 +39,8 @@ RoverBoardHardwareInterface::~RoverBoardHardwareInterface() {
  *
  *******************************************************************************/
 bool RoverBoardHardwareInterface::start(const ros::Time& time) {
-  od_.reboot();
+  ROS_INFO_STREAM_NAMED(__NAME, "in RoverBoardHardwareInterface::start");
+  od_->reboot();
   return true;
 }
 
@@ -57,7 +62,7 @@ bool RoverBoardHardwareInterface::shutdown() {
 void RoverBoardHardwareInterface::read(const ros::Time& now) {
   double enc[2], enc_vel[2];
   double iqsp[2], iqm[2];
-  od_.readFeedback(enc, enc_vel, iqsp, iqm);
+  od_->readFeedback(enc, enc_vel, iqsp, iqm);
   joint_position_[0] = enc[ODRV_LW_CHAN]*RAD_PER_TICK*ODRV_LW_POL;
   joint_position_[1] = enc[ODRV_RW_CHAN]*RAD_PER_TICK*ODRV_RW_POL;
   joint_velocity_[0] = enc_vel[ODRV_LW_CHAN]*RAD_PER_TICK*ODRV_LW_POL;
@@ -75,8 +80,7 @@ void RoverBoardHardwareInterface::write() {
   double sp_tps_right = joint_velocity_command_[1]*TICK_PER_RAD*ODRV_RW_POL;
   double vsps[2] = {sp_tps_left, sp_tps_right};
   double iffs[2] = {0., 0.};
-  od_.sendVelSetpoints(vsps, iffs);
-
+  od_->sendVelSetpoints(vsps, iffs);
 }
 
 
@@ -87,23 +91,29 @@ int main(int argc, char** argv)
   ros::AsyncSpinner spinner(1);
   spinner.start();
 
-  RoverBoardHardwareInterface hw;
+  ros::NodeHandle nh("~");
+  double period;
+  int odrive_interface_type;
+  nh.param("hardware_interface_dt", period, 1./50);
+  nh.param("odrive_interface_type", odrive_interface_type, 0);
+  ROS_INFO_STREAM_NAMED(__NAME, "  period: " << period);
+  ROS_INFO_STREAM_NAMED(__NAME, "  odrive_interface_type: " << odrive_interface_type);
+  
+  RoverBoardHardwareInterface hw(odrive_interface_type);
   if (!hw.start(ros::Time::now())) {
     ROS_ERROR_STREAM_NAMED(__NAME, "Failed to initialize hardware. bailling out...");
     return -1;
   }
-
-  ros::NodeHandle nh;
+  
   controller_manager::ControllerManager cm(&hw, nh);
-  ros::Duration period(RVHI_DT);
+  ros::Duration _period(period);
   while (ros::ok()) {
     ros::Time now = ros::Time::now();
     hw.read(now);
-    cm.update(now, period);
+    cm.update(now, _period);
     hw.write();
-    period.sleep();
+    _period.sleep();
   }
-
   
   ROS_INFO_STREAM_NAMED(__NAME, "roverboard hardware node exiting...");
   hw.shutdown();

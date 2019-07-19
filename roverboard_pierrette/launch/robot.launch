@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="robot_name" default="caroline" />
+  <arg name="robot_name" default="pierrette" />
   
   <arg name="start_base_control" default="true" />
   <arg name="start_description" default="true" />
   <arg name="start_camera" default="true" />
   <arg name="start_fl_lane_detect" default="true" />
-  <arg name="start_fl_guidance" default="true" />
+  <arg name="start_fl_guidance" default="false" />
   <arg name="start_teleop" default="true" />
   
   <!-- Starts hardware -->
@@ -34,7 +34,7 @@
   
   <!-- Starts camera -->
   <group if="$(arg start_camera)">
-    <include file="$(find roverboard_caroline)/launch/camera_road_front.launch">
+    <include file="$(find roverboard_pierrette)/launch/camera_road_front.launch">
     </include>
   </group>
 
@@ -43,7 +43,7 @@
     <node name="follow_line_lane_detector" pkg="two_d_guidance" type="fl_lane_detect_node.py">
       <param name="cameras" value="camera_road_front"/>
       <param name="ref_frame" value="base_link_footprint"/>
-      <param name="mask_threshold" value="115"/>
+      <param name="mask_threshold" value="120"/>
     </node>
   </group>
 
@@ -64,5 +64,6 @@
       <arg name="robot_name" value="$(arg robot_name)" />
     </include>
   </group>
+  
   
 </launch>
