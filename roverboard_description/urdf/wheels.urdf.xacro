@@ -37,7 +37,8 @@
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0" />
       <dynamics damping="${wheel_joint_damping}" friction="${wheel_joint_friction}"/>
-      <limit effort="1" velocity="10"/>
+      <!--<limit effort="${wheel_joint_eff_limit}" velocity="${wheel_joint_vel_limit}"/>-->
+      <!--<limit effort="1" velocity="10"/>-->
     </joint>
 
     
