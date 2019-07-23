@@ -13,11 +13,12 @@ import numpy as np
 from libcpp cimport bool
 
 cdef extern from "roverboard_odrive/roverboard_odrive_ascii.h":
-    cdef cppclass c_Odrive "Odrive":
+    cdef cppclass c_Odrive "OdriveAscii":
         c_Odrive()
         bool init()
-        void send_velocity_setpoint(int m1, int m2)
-        void read_feedback(double* enc, double* enc_vel)
+        void readFeedback(double* enc, double* enc_vel, double* iq_sp, double* iq_meas)
+        void sendVelSetpoints(double* vsps, double* iq_ff)
+
 
 cdef class Odrive:
     cdef c_Odrive *thisptr
@@ -29,10 +30,16 @@ cdef class Odrive:
         self.thisptr.init()
         
     def send_velocity_setpoint(self, m0, m1):
-        self.thisptr.send_velocity_setpoint(m0, m1)
+        cdef double vsp[2]
+        cdef double iff[2]
+        vsp[0] = m0; vsp[1] = m1
+        iff[0] = 0; iff[1] = 0
+        self.thisptr.sendVelSetpoints(vsp, iff)
 
     def read_feedback(self):
         cdef double enc[2]
         cdef double enc_vel[2]
-        self.thisptr.read_feedback(enc, enc_vel)
+        cdef double iq_sp[2]
+        cdef double iq_meas[2]
+        self.thisptr.readFeedback(enc, enc_vel, iq_sp, iq_meas)
         return enc[0], enc[1], enc_vel[0], enc_vel[1]

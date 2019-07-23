@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="robot_name" default="caroline" />
+
+  <node pkg="roverboard_odrive" type="test_odrive_ascii.py" name="odrive_node" />
+ 
+</launch>

@@ -13,7 +13,7 @@ import numpy as np
 from libcpp cimport bool
 
 cdef extern from "roverboard_odrive/roverboard_odrive_can.h":
-    cdef cppclass c_Odrive "Odrive":
+    cdef cppclass c_Odrive "OdriveCAN":
         c_Odrive()
         bool init()
         void sendVelSetpoints(double* vsps, double* iq_ff)
