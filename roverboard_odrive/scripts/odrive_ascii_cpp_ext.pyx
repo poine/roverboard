@@ -29,11 +29,11 @@ cdef class Odrive:
     def init(self):
         self.thisptr.init()
         
-    def send_velocity_setpoint(self, m0, m1):
+    def send_velocity_setpoint(self, m0, m1, i0, i1):
         cdef double vsp[2]
         cdef double iff[2]
         vsp[0] = m0; vsp[1] = m1
-        iff[0] = 0; iff[1] = 0
+        iff[0] = i0; iff[1] = i1
         self.thisptr.sendVelSetpoints(vsp, iff)
 
     def read_feedback(self):
