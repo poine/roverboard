@@ -5,8 +5,11 @@
   <arg name="start_base_control" default="true" />
   <arg name="start_description" default="true" />
   <arg name="start_camera" default="true" />
-  <arg name="start_fl_lane_detect" default="true" />
-  <arg name="start_fl_guidance" default="true" />
+  <arg name="start_trr_lane" default="true" />
+  <arg name="start_trr_start_finish" default="false" />
+  <arg name="start_trr_traffic_light" default="true" />
+  <arg name="start_trr_guidance" default="true" />
+  <arg name="start_trr_race_manager" default="true" />
   <arg name="start_teleop" default="true" />
   
   <!-- ****** Starts hardware ****** -->
@@ -36,20 +39,47 @@
   <group if="$(arg start_camera)">
     <include file="$(find roverboard_caroline)/launch/camera_road_front.launch">
     </include>
+    <include file="$(find roverboard_caroline)/launch/camera_horiz_front.launch">
+    </include>
   </group>
 
   <!--  ****** Lane detection *****  -->
-  <group if="$(arg start_fl_lane_detect)">
-    <node name="follow_line_lane_detector" pkg="two_d_guidance" type="fl_lane_detect_node.py">
+  <group if="$(arg start_trr_lane)">
+    <node name="trr_vision_lane_node" pkg="two_d_guidance" type="trr_vision_lane_node.py">
       <param name="cameras" value="camera_road_front"/>
       <param name="ref_frame" value="base_link_footprint"/>
       <param name="mask_threshold" value="115"/>
     </node>
   </group>
 
-  <!--  ****** Lane guidance *****  -->
-  <group if="$(arg start_fl_guidance)">
-    <node name="follow_line_guidance" pkg="two_d_guidance" type="fl_guidance_node.py" output="screen">
+  <!--  ****** Start Finish detection *****  -->
+  <group if="$(arg start_trr_start_finish)">
+    <node name="trr_vision_start_finish_node" pkg="two_d_guidance" type="trr_vision_start_finish_node.py">
+      <param name="cameras" value="camera_road_front"/>
+      <param name="ref_frame" value="base_link_footprint"/>
+      <param name="mask_threshold" value="180"/>
+    </node>
+  </group>
+
+  <!--  ****** Traffic Light detection *****  -->
+  <group if="$(arg start_trr_traffic_light)">
+    <node name="trr_vision_traffic_light_node" pkg="two_d_guidance" type="trr_vision_traffic_light_node.py">
+      <param name="cameras" value="camera_horiz_front"/>
+      <param name="ref_frame" value="base_link_footprint"/>
+    </node>
+  </group>
+
+  <!--  ****** Race Manager *****  -->
+  <group if="$(arg start_trr_race_manager)">
+    <node name="trr_race_manager_node" pkg="two_d_guidance" type="trr_race_manager.py">
+      <!--<param name="cameras" value="camera_road_front"/>-->
+      <!--<param name="ref_frame" value="base_link_footprint"/>-->
+    </node>
+  </group>
+
+  <!--  ****** Guidance *****  -->
+  <group if="$(arg start_trr_guidance)">
+    <node name="trr_guidance_node" pkg="two_d_guidance" type="trr_guidance_node.py" output="screen">
       <param name="ref_frame" value="base_link_footprint"/>
       <param name="cmd_topic" value="$(arg robot_name)_robot_hardware/diff_drive_controller/cmd_vel"/>
       <param name="guidance_mode" value="0"/>
