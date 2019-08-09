@@ -6,7 +6,7 @@
   <arg name="start_description" default="true" />
   <arg name="start_camera" default="true" />
   <arg name="start_trr_lane" default="true" />
-  <arg name="start_trr_start_finish" default="false" />
+  <arg name="start_trr_start_finish" default="true" />
   <arg name="start_trr_traffic_light" default="true" />
   <arg name="start_trr_guidance" default="true" />
   <arg name="start_trr_race_manager" default="true" />
@@ -43,12 +43,15 @@
     </include>
   </group>
 
+  <!--  ****** Lod configuration *****  -->
+  <rosparam command="load" file="$(find roverboard_caroline)/config/trr_zroom.yaml" />
+
   <!--  ****** Lane detection *****  -->
   <group if="$(arg start_trr_lane)">
     <node name="trr_vision_lane_node" pkg="two_d_guidance" type="trr_vision_lane_node.py">
       <param name="cameras" value="camera_road_front"/>
       <param name="ref_frame" value="base_link_footprint"/>
-      <param name="mask_threshold" value="115"/>
+      <!-- <param name="mask_threshold" value="115"/> -->
     </node>
   </group>
 
@@ -57,7 +60,6 @@
     <node name="trr_vision_start_finish_node" pkg="two_d_guidance" type="trr_vision_start_finish_node.py">
       <param name="cameras" value="camera_road_front"/>
       <param name="ref_frame" value="base_link_footprint"/>
-      <param name="mask_threshold" value="180"/>
     </node>
   </group>
 
@@ -72,8 +74,6 @@
   <!--  ****** Race Manager *****  -->
   <group if="$(arg start_trr_race_manager)">
     <node name="trr_race_manager_node" pkg="two_d_guidance" type="trr_race_manager.py">
-      <!--<param name="cameras" value="camera_road_front"/>-->
-      <!--<param name="ref_frame" value="base_link_footprint"/>-->
     </node>
   </group>
 
@@ -82,9 +82,9 @@
     <node name="trr_guidance_node" pkg="two_d_guidance" type="trr_guidance_node.py" output="screen">
       <param name="ref_frame" value="base_link_footprint"/>
       <param name="cmd_topic" value="$(arg robot_name)_robot_hardware/diff_drive_controller/cmd_vel"/>
-      <param name="guidance_mode" value="0"/>
-      <param name="vel_sp" value="0.5"/>
-      <param name="lookahead" value="0.6"/>
+      <!-- <param name="guidance_mode" value="0"/> -->
+      <!-- <param name="vel_sp" value="0.5"/> -->
+      <!-- <param name="lookahead" value="0.6"/> -->
     </node>
   </group>
 
