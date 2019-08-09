@@ -1,0 +1,13 @@
+trr_vision_traffic_light_node:
+  roi_xc: 240
+  roi_yc: 237
+
+trr_vision_start_finish_node:
+  roi_yt: 75
+  # red mask
+  r_hc:   175
+  r_hs:    15
+  r_smin: 100
+  r_smax: 255
+  r_vmin: 100
+  r_vmax: 255

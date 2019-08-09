@@ -30,7 +30,12 @@
 
   <!-- Camera -->
   <xacro:if value="${use_camera}">
-    <xacro:gazebo_rpi_camera cam_name="${cam_name}"/>
+    <xacro:gazebo_ueye_camera cam_name="${cam_name}"/>
+  </xacro:if>
+
+   <!-- Camera -->
+  <xacro:if value="${use_camera2}">
+    <xacro:gazebo_ueye_camera cam_name="${cam2_name}"/>
   </xacro:if>
   
   <!-- Lidar -->

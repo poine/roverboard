@@ -56,8 +56,12 @@
   <!-- <xacro:property name="cam_look_down_deg" value="25." /> -->
   <!-- <xacro:property name="cam_cl_to_ref_rpy" value="0 ${cam_look_down_deg/180*pi}} 0" /> -->
   <xacro:property name="cam_cl_to_ref_rpy" value="0.0077082   0.47182333  0.02633946" />
+  <!-- Camera 2 -->
+  <xacro:property name="use_camera2" value="true" />
+  <xacro:property name="cam2_name" value="camera_horiz_front" />
+  <xacro:property name="cam2_cl_to_ref_xyz" value="0.06483087  0.00032532  0.22" />
+  <xacro:property name="cam2_cl_to_ref_rpy" value="0.0077082   -0.1  0.02633946" />
   
-
   <xacro:property name="use_hokuyo_lidar" value="true" />
 
   <xacro:include filename="$(find roverboard_description)/urdf/roverboard.urdf.xacro" />

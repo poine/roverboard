@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <launch>
+
+  <!-- Starts a robot in gazebo -->
+
   <arg name="start_gazebo" default="true" />
   <arg name="start_base_control" default="true"/>
   <arg name="start_state_publisher" default="true"/>
