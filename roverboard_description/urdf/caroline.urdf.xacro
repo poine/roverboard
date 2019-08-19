@@ -53,10 +53,12 @@
   <!-- Camera 1 -->
   <xacro:property name="cam_name" value="camera_road_front" />
   <xacro:property name="cam_hd_visual" value="true" />
-  <xacro:property name="cam_cl_to_ref_xyz" value="0.06483087  0.00032532  0.1591418" />
+  <!--<xacro:property name="cam_cl_to_ref_xyz" value="0.06483087  0.00032532  0.1591418" /> -->
+  <xacro:property name="cam_cl_to_ref_xyz" value="0.03418817 -0.00488509  0.17943348" />
   <!-- <xacro:property name="cam_look_down_deg" value="25." /> -->
   <!-- <xacro:property name="cam_cl_to_ref_rpy" value="0 ${cam_look_down_deg/180*pi}} 0" /> -->
-  <xacro:property name="cam_cl_to_ref_rpy" value="0.0077082   0.47182333  0.02633946" />
+  <!--<xacro:property name="cam_cl_to_ref_rpy" value="0.0077082   0.47182333  0.02633946" /> -->
+  <xacro:property name="cam_cl_to_ref_rpy" value="0.00211058  0.64585395  0.03289786" />
   <!-- Camera 2 -->
   <xacro:property name="use_camera2" value="true" />
   <xacro:property name="cam2_name" value="camera_horiz_front" />
