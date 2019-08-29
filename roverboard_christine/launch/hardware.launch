@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Starts the hardware on the real robot -->
+  <arg name="robot_name" default="christine" />
+  <!-- <arg name="odrive_interface_type" default="0" />     <!-\- 0->ASCII, 1->CAN -\-> -->
+  <!-- <arg name="hardware_interface_dt" default="0.02" />  <!-\- -\-> -->
+
+  <node name="$(arg robot_name)_robot_hardware" output="screen"
+        pkg="oscar_control" type="christine_serial_hwi_node">
+
+    <!-- <param name="odrive_interface_type" type="int" value="$(arg odrive_interface_type)" /> -->
+    <!-- <param name="hardware_interface_dt" type="double" value="$(arg hardware_interface_dt)" /> -->
+
+    <remap from="/joint_states" to="/$(arg robot_name)/joint_states" />
+  </node>
+
+</launch>
