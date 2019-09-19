@@ -43,7 +43,7 @@
     </include>
   </group>
 
-  <!--  ****** Lod configuration *****  -->
+  <!--  ****** Load configuration *****  -->
   <rosparam command="load" file="$(find roverboard_caroline)/config/trr_zroom.yaml" />
 
   <!--  ****** Lane detection *****  -->

@@ -1,0 +1,45 @@
+
+trr_vision_traffic_light_node:
+  roi_xc: 570
+  roi_yc: 180
+  roi_dx: 200
+  roi_dy: 100
+  # green mask
+  g_hc:    70
+  g_hs:    20
+  g_smin:  90
+  g_smax: 255
+  g_vmin:  65
+  g_vmax: 255
+  # red mask
+  r_hc:   165
+  r_hs:    20
+  r_smin:  70
+  r_smax: 255
+  r_vmin:  50
+  r_vmax: 255
+  
+trr_vision_start_finish_node:
+  # roi
+  roi_yt: 80
+  # green mask
+  g_hc:    50
+  g_hs:    25
+  g_smin:  60
+  g_smax: 255
+  g_vmin:  60
+  g_vmax: 255
+  # red mask
+  r_hc:   120
+  r_hs:    17
+  r_smin: 100
+  r_smax: 255
+  r_vmin:  82
+  r_vmax: 210
+
+trr_vision_lane_node:
+  mask_threshold: 140
+  
+trr_guidance_node:
+  vel_sp: 0.65 # TODO FIXME
+  lookahead_dist: 0.61
