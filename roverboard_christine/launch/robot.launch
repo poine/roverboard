@@ -5,6 +5,7 @@
   <arg name="start_description" default="true" />
   <arg name="start_camera" default="true" />
   <arg name="start_trr_lane_detect" default="true" />
+  <arg name="start_trr_start_finish" default="true" />
   <arg name="start_trr_guidance" default="true" />
   <arg name="start_trr_state_estimation" default="true" />
   <arg name="start_trr_race_manager" default="true" />
@@ -35,6 +36,9 @@
     </include>
   </group>
 
+  <!--  ****** Load configuration *****  -->
+  <rosparam command="load" file="$(find roverboard_christine)/config/trr_vedrines.yaml" />
+
   <!--  ****** Lane detection *****  -->
   <group if="$(arg start_trr_lane_detect)">
     <node name="trr_vision_lane_node" pkg="two_d_guidance" type="trr_vision_lane_node.py">
@@ -44,6 +48,14 @@
     </node>
   </group>
 
+  <!--  ****** Start Finish detection *****  -->
+  <group if="$(arg start_trr_start_finish)">
+    <node name="trr_vision_start_finish_node" pkg="two_d_guidance" type="trr_vision_start_finish_node.py">
+      <param name="cameras" value="camera_road_front"/>
+      <param name="ref_frame" value="base_link_footprint"/>
+    </node>
+  </group>
+  
   <!--  ****** Race Manager *****  -->
   <group if="$(arg start_trr_race_manager)">
     <node name="trr_race_manager_node" pkg="trr" type="race_manager.py">
