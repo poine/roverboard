@@ -4,6 +4,10 @@
   <arg name="start_base_control" default="true" />
   <arg name="start_description" default="true" />
   <arg name="start_camera" default="true" />
+
+<!--  <arg name="trr_config" default="vedrines" />-->
+  <arg name="trr_config" default="zroom" />
+  
   <arg name="start_trr_lane_detect" default="true" />
   <arg name="start_trr_start_finish" default="true" />
   <arg name="start_trr_guidance" default="true" />
@@ -37,22 +41,28 @@
   </group>
 
   <!--  ****** Load configuration *****  -->
-  <rosparam command="load" file="$(find roverboard_christine)/config/trr_vedrines.yaml" />
+  <!-- load parameters in the parameter server --> 
+  <rosparam command="load" file="$(find roverboard_christine)/config/trr_$(arg trr_config).yaml" />
 
   <!--  ****** Lane detection *****  -->
   <group if="$(arg start_trr_lane_detect)">
     <node name="trr_vision_lane_node" pkg="two_d_guidance" type="trr_vision_lane_node.py">
+      <param name="robot_name" value="$(arg robot_name)" />
       <param name="cameras" value="camera_road_front"/>
       <param name="ref_frame" value="base_link_footprint"/>
-      <param name="mask_threshold" value="115"/>
+      <!--<param name="mask_threshold" value="115"/>-->
     </node>
   </group>
 
   <!--  ****** Start Finish detection *****  -->
   <group if="$(arg start_trr_start_finish)">
-    <node name="trr_vision_start_finish_node" pkg="two_d_guidance" type="trr_vision_start_finish_node.py">
-      <param name="cameras" value="camera_road_front"/>
-      <param name="ref_frame" value="base_link_footprint"/>
+    <node name="trr_vision_start_finish_node" pkg="two_d_guidance" type="trr_vision_start_finish_node.py" output="screen">
+      <param name="robot_name" value="$(arg robot_name)" />
+      <param name="cameras"    value="camera_road_front"/>
+      <param name="ref_frame"  value="base_link_footprint"/>
+      <!-- takes precedence over the values in the yaml config file --> 
+      <!--<param name="roi_yt"  value="81"/> -->
+      <!--<param name="r_hc"  value="122"/> -->
     </node>
   </group>
   
@@ -64,18 +74,18 @@
   
   <!--  ****** Guidance *****  -->
   <group if="$(arg start_trr_guidance)">
-    <node name="trr_guidance" pkg="two_d_guidance" type="trr_guidance_node.py" output="screen">
+    <node name="trr_guidance_node" pkg="two_d_guidance" type="trr_guidance_node.py" output="screen">
       <param name="ref_frame" value="base_link_footprint"/>
       <param name="cmd_topic" value="/oscar_ackermann_controller/cmd_vel"/>
-      <param name="guidance_mode" value="0"/>
-      <param name="vel_sp" value="0.06"/>
-      <param name="lookahead" value="0.6"/>
+      <!-- <param name="guidance_mode" value="0"/> -->
+      <!-- <param name="vel_sp" value="0.06"/> -->
+      <!-- <param name="lookahead" value="0.6"/> -->
     </node>
   </group>
 
   <!--  ****** State Estimation *****  -->
   <group if="$(arg start_trr_state_estimation)">
-    <node name="trr_state_estimator_node" pkg="two_d_guidance" type="trr_state_estimator.py">
+    <node name="trr_state_estimator_node" pkg="two_d_guidance" type="trr_state_estimator.py" output="screen">
       <remap from="/odom" to="/oscar_ackermann_controller/odom"/>
       <param name="k_odom" value="1."/>
     </node>
