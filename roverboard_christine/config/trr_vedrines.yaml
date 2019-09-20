@@ -18,24 +18,24 @@ trr_vision_traffic_light_node:
   r_smax: 255
   r_vmin:  50
   r_vmax: 255
-  
+
 trr_vision_start_finish_node:
   # roi
   roi_yt: 80
   # green mask
-  g_hc:    50
-  g_hs:    25
-  g_smin:  60
+  g_hc:    80
+  g_hs:    10
+  g_smin:  65
   g_smax: 255
-  g_vmin:  60
+  g_vmin:  70
   g_vmax: 255
   # red mask
-  r_hc:   121
-  r_hs:    17
+  r_hc:   175
+  r_hs:    10
   r_smin: 100
   r_smax: 255
-  r_vmin:  82
-  r_vmax: 210
+  r_vmin: 100
+  r_vmax: 255
 
 trr_vision_lane_node:
   mask_threshold: 160
