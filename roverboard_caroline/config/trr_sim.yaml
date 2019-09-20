@@ -3,11 +3,33 @@ trr_vision_traffic_light_node:
   roi_yc: 237
 
 trr_vision_start_finish_node:
-  roi_yt: 75
+  # roi
+  roi_yt: 20
+  # green mask
+  g_hc:    70
+  g_hs:    10
+  g_smin:  65
+  g_smax: 255
+  g_vmin:  70
+  g_vmax: 255
   # red mask
   r_hc:   175
-  r_hs:    15
+  r_hs:    10
   r_smin: 100
   r_smax: 255
   r_vmin: 100
   r_vmax: 255
+
+trr_vision_lane_node:
+  mask_threshold: 160
+  
+trr_guidance_node:
+  vel_sp: 0.65
+  lookahead_dist: 0.61
+  path_name: demo_z/track_trr_sim_1.npz
+
+trr_state_estimator_node:
+  path_filename: /home/poine/work/two_d_guidance/paths/demo_z/track_trr_sim_1.npz
+
+trr_state_estimator_display_node:
+  path_filename: /home/poine/work/two_d_guidance/paths/demo_z/track_trr_sim_1.npz
