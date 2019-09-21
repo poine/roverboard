@@ -25,7 +25,7 @@ trr_vision_lane_node:
   
 trr_guidance_node:
   vel_sp: 0.65
-  lookahead_dist: 0.61
+  lookahead_dist: 0.7
   path_name: demo_z/track_trr_sim_1.npz
 
 trr_state_estimator_node:
