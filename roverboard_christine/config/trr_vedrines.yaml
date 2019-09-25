@@ -20,8 +20,10 @@ trr_vision_traffic_light_node:
   r_vmax: 255
 
 trr_vision_start_finish_node:
-  # roi
+  # global
   roi_yt: 80
+  min_area: 3000
+  min_eccentricity: 0.8
   # green mask
   g_hc:    80
   g_hs:    10
@@ -38,11 +40,12 @@ trr_vision_start_finish_node:
   r_vmax: 255
 
 trr_vision_lane_node:
-  mask_threshold: 160
+  mask_min_area: 100
+  bridge_offset: 15
   
 trr_guidance_node:
-  vel_sp: 0.65
-  lookahead_dist: 0.61
+  vel_sp: 2.
+  lookahead_dist: 1.2
   path_name: vedrines/track_trr.npz # FIXME, need velocity enabled path
 
 trr_state_estimator_node:
