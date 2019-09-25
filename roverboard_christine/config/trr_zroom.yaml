@@ -1,3 +1,5 @@
+race_manager:
+  nb_lap: 5
 
 trr_vision_traffic_light_node:
   roi_xc: 570

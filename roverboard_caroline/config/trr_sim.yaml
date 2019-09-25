@@ -1,3 +1,6 @@
+race_manager:
+  nb_lap: 5
+
 trr_vision_traffic_light_node:
   roi_xc: 240
   roi_yc: 237
@@ -24,11 +27,11 @@ trr_vision_start_finish_node:
 
 trr_vision_lane_node:
   mask_min_area: 100
-  bridge_offset: 15
+  bridge_offset: 30
   
 trr_guidance_node:
-  vel_sp: 0.65
-  lookahead_dist: 0.7
+  vel_sp: 1.9
+  lookahead_dist: 1.2
   path_name: demo_z/track_trr_sim_1.npz
 
 trr_state_estimator_node:
