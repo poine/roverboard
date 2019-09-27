@@ -1,3 +1,5 @@
+race_manager:
+  nb_lap: 3
 
 trr_vision_traffic_light_node:
   roi_xc: 570
@@ -20,8 +22,10 @@ trr_vision_traffic_light_node:
   r_vmax: 255
   
 trr_vision_start_finish_node:
-  # roi
+  # global
   roi_yt: 80
+  min_area: 4000
+  min_eccentricity: 0.78
   # green mask
   g_hc:    50
   g_hs:    25
@@ -38,7 +42,8 @@ trr_vision_start_finish_node:
   r_vmax: 255
 
 trr_vision_lane_node:
-  mask_threshold: 140
+  mask_min_area: 100
+  bridge_offset: 10
   
 trr_guidance_node:
   vel_sp: 0.65 # TODO FIXME
