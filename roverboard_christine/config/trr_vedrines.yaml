@@ -43,10 +43,10 @@ trr_vision_lane_node:
 trr_guidance_node:
   vel_sp: 0.65
   lookahead_dist: 0.61
-  path_name: vedrines/track_trr.npz # FIXME, need velocity enabled path
+  path_name: vedrines/track_trr_0.npz 
 
 trr_state_estimator_node:
-  path_filename: /home/poine/work/two_d_guidance/paths/vedrines/track_trr.npz
+  path_filename: /home/poine/work/two_d_guidance/paths/vedrines/track_trr_0.npz
 
 trr_state_estimator_display_node:
-  path_filename: /home/poine/work/two_d_guidance/paths/vedrines/track_trr.npz
+  path_filename: /home/poine/work/two_d_guidance/paths/vedrines/track_trr_0.npz

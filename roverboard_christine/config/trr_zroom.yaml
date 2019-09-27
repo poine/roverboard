@@ -46,10 +46,10 @@ trr_vision_lane_node:
 trr_guidance_node:
   vel_sp: 0.76
   lookahead_dist: 0.82
-  path_name: demo_z/track_trr_real_vel_1.npz
+  path_name: demo_z/track_trr_real_0.npz
 
 trr_state_estimator_node:
-  path_filename: /home/poine/work/two_d_guidance/paths/demo_z/track_trr_real.npz
+  path_filename: /home/poine/work/two_d_guidance/paths/demo_z/track_trr_real_0.npz
 
 trr_state_estimator_display_node:
-  path_filename: /home/poine/work/two_d_guidance/paths/demo_z/track_trr_real.npz
+  path_filename: /home/poine/work/two_d_guidance/paths/demo_z/track_trr_real_0.npz
