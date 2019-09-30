@@ -51,7 +51,7 @@ trr_guidance_node:
   path_name: vedrines/track_trr.npz # FIXME, need velocity enabled path
 
 trr_state_estimator_node:
-  path_filename: /home/poine/work/two_d_guidance/paths/vedrines/track_trr.npz
+  path_filename: /home/poine/work/two_d_guidance/paths/vedrines/track_trr_0.npz
 
 trr_state_estimator_display_node:
-  path_filename: /home/poine/work/two_d_guidance/paths/vedrines/track_trr.npz
+  path_filename: /home/poine/work/two_d_guidance/paths/vedrines/track_trr_0.npz

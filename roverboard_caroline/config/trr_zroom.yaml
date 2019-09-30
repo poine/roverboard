@@ -48,3 +48,10 @@ trr_vision_lane_node:
 trr_guidance_node:
   vel_sp: 0.65 # TODO FIXME
   lookahead_dist: 0.61
+  path_name: demo_z/track_trr_real_1.npz
+
+trr_state_estimator_node:
+  path_filename: /home/poine/work/two_d_guidance/paths/demo_z/track_trr_real_1.npz
+
+trr_state_estimator_display_node:
+  path_filename: /home/poine/work/two_d_guidance/paths/demo_z/track_trr_real_1.npz
