@@ -40,8 +40,8 @@
     <param name="auto_gain" type="bool" value="True" />
     <param name="master_gain" type="int" value="0" />
     <param name="red_gain" type="int" value="0" />
-    <param name="green_gain" type="int" value="1" />
-    <param name="blue_gain" type="int" value="16" />
+    <param name="green_gain" type="int" value="0" />
+    <param name="blue_gain" type="int" value="2" />
     <param name="gain_boost" type="bool" value="False" />
 
     <param name="auto_exposure" type="bool" value="True" />
