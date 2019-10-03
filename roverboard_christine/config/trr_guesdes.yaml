@@ -1,0 +1,57 @@
+race_manager:
+  nb_lap: 5
+
+trr_vision_traffic_light_node:
+  roi_xc: 570
+  roi_yc: 180
+  roi_dx: 200
+  roi_dy: 100
+  # green mask
+  g_hc:    70
+  g_hs:    20
+  g_smin:  90
+  g_smax: 255
+  g_vmin:  65
+  g_vmax: 255
+  # red mask
+  r_hc:   165
+  r_hs:    20
+  r_smin:  70
+  r_smax: 255
+  r_vmin:  50
+  r_vmax: 255
+
+trr_vision_start_finish_node:
+  # global
+  roi_yt: 80
+  min_area: 3000
+  min_eccentricity: 0.8
+  # green mask
+  g_hc:    60
+  g_hs:    10
+  g_smin: 129
+  g_smax: 189
+  g_vmin: 120
+  g_vmax: 255
+  # red mask
+  r_hc:   199
+  r_hs:    10
+  r_smin: 101
+  r_smax: 194
+  r_vmin: 112
+  r_vmax: 255
+
+trr_vision_lane_node:
+  mask_min_area: 100
+  bridge_offset: 15
+  
+trr_guidance_node:
+  vel_sp: 2.
+  lookahead_dist: 1.2
+  path_name: guesdes/track_trr_0.npz 
+
+trr_state_estimator_node:
+  path_filename: /home/poine/work/two_d_guidance/paths/guesdes/track_trr_0.npz
+
+trr_state_estimator_display_node:
+  path_filename: /home/poine/work/two_d_guidance/paths/guesdes/track_trr_0.npz

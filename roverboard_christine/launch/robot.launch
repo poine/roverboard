@@ -10,6 +10,7 @@
   
   <arg name="start_trr_lane_detect" default="true" />
   <arg name="start_trr_start_finish" default="true" />
+  <arg name="start_trr_traffic_light" default="true" />
   <arg name="start_trr_guidance" default="true" />
   <arg name="start_trr_state_estimation" default="true" />
   <arg name="start_trr_race_manager" default="true" />
@@ -38,6 +39,8 @@
   <group if="$(arg start_camera)">
     <include file="$(find roverboard_christine)/launch/camera_road_front.launch">
     </include>
+    <include file="$(find roverboard_christine)/launch/camera_horiz_front.launch">
+    </include>
   </group>
 
   <!--  ****** Load configuration *****  -->
@@ -65,7 +68,15 @@
       <!--<param name="r_hc"  value="122"/> -->
     </node>
   </group>
-  
+
+  <!--  ****** Traffic Light detection *****  -->
+  <group if="$(arg start_trr_traffic_light)">
+    <node name="trr_vision_traffic_light_node" pkg="two_d_guidance" type="trr_vision_traffic_light_node.py">
+      <param name="cameras" value="camera_horiz_front"/>
+      <param name="ref_frame" value="base_link_footprint"/>
+    </node>
+  </group>
+
   <!--  ****** Race Manager *****  -->
   <group if="$(arg start_trr_race_manager)">
     <node name="trr_race_manager_node" pkg="trr" type="race_manager.py">
