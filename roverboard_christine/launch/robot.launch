@@ -39,6 +39,9 @@
   <group if="$(arg start_camera)">
     <include file="$(find roverboard_christine)/launch/camera_road_front.launch">
     </include>
+  </group>
+
+  <group if="$(arg start_trr_traffic_light)">
     <include file="$(find roverboard_christine)/launch/camera_horiz_front.launch">
     </include>
   </group>
