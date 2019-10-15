@@ -56,7 +56,10 @@
   <!-- Caster -->
   <xacro:rb_caster> </xacro:rb_caster>
 
-  <!-- Sensors -->
+  <!-- ******** -->
+  <!-- Sensors  -->
+  <!-- ******** -->
+
   <!-- Camera -->
   <xacro:include filename="$(find common_robots)/urdf/sensors.urdf.xacro" />
   <xacro:if value="${use_camera}">
@@ -72,9 +75,33 @@
   
   <!-- Lidar -->
   <xacro:if value="${use_hokuyo_lidar}">
-    <xacro:property name="laser_look_down_deg" value="5." />
+    <xacro:property name="laser_look_down_deg" value="0." />
     <xacro:cs_hokuyo>
-      <origin xyz="0.04 0 0.1" rpy="0 ${laser_look_down_deg/180*pi}} 0" />
+      <origin xyz="0.04 0 0.01" rpy="0 ${laser_look_down_deg/180*pi}} 0" />
     </xacro:cs_hokuyo>
   </xacro:if>
+
+  <xacro:if value="${use_rplidar}">
+    <xacro:cs_rplidar>
+      <origin xyz="0.04 0 0.02" rpy="0 0 0" />
+    </xacro:cs_rplidar>
+  </xacro:if>
+
+  <xacro:if value="${use_vlp16}">
+    <xacro:cs_vlp16>
+      <origin xyz="0. 0. 0.06" rpy="0 0 0" />
+    </xacro:cs_vlp16>
+  </xacro:if>
+  
+  <!-- IMU -->
+  <xacro:if value="${use_imu}">
+    <link name="imu_link"/>
+    <joint name="imu_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0 " />
+      <parent link="base_link_footprint" />
+      <child link="imu_link" />
+    </joint>
+  </xacro:if>
+
+  
 </robot>
