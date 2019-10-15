@@ -1,24 +1,24 @@
-race_manager:
-  nb_lap: 5
+trr_race_manager_node:
+  nb_lap: 1
 
 trr_vision_traffic_light_node:
-  roi_xc: 570
-  roi_yc: 180
+  roi_xc: 450
+  roi_yc: 150
   roi_dx: 200
   roi_dy: 100
   # green mask
-  g_hc:    70
-  g_hs:    20
-  g_smin:  90
+  g_hc:    55
+  g_hs:    12
+  g_smin: 140
   g_smax: 255
-  g_vmin:  65
+  g_vmin:  70
   g_vmax: 255
   # red mask
-  r_hc:   165
-  r_hs:    20
-  r_smin:  70
+  r_hc:   7
+  r_hs:    10
+  r_smin: 175
   r_smax: 255
-  r_vmin:  50
+  r_vmin:  70
   r_vmax: 255
 
 trr_vision_start_finish_node:
@@ -27,18 +27,18 @@ trr_vision_start_finish_node:
   min_area: 3000
   min_eccentricity: 0.8
   # green mask
-  g_hc:    60
+  g_hc:    53
   g_hs:    10
-  g_smin: 129
-  g_smax: 189
-  g_vmin: 120
+  g_smin: 150
+  g_smax: 255
+  g_vmin:  90
   g_vmax: 255
   # red mask
-  r_hc:   199
+  r_hc:   190
   r_hs:    10
-  r_smin: 101
-  r_smax: 194
-  r_vmin: 112
+  r_smin: 105
+  r_smax: 255
+  r_vmin:  70
   r_vmax: 255
 
 trr_vision_lane_node:
