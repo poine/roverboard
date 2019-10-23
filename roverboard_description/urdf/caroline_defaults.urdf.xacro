@@ -16,7 +16,7 @@
   <!-- Main wheels -->
   <xacro:property name="wheel_radius" value="0.045" /> <!-- value="0.0375" /> -->
   <xacro:property name="wheel_width"  value="0.057" />
-  <xacro:property name="wheel_track"  value="0.200" /> <!-- value="0.280" /> -->
+  <xacro:property name="wheel_track"  value="0.21" /> <!-- value="0.280" /> -->
   <xacro:property name="wheel_mass"   value="0.5" />
   <xacro:property name="wheel_joint_damping" value="0.01" />
   <xacro:property name="wheel_joint_friction" value="0.01" />
@@ -49,7 +49,7 @@
   <xacro:property name="high_definition_cwheel_plate_visual" value="false" />
 
 
-  <xacro:property name="use_camera" value="true" />
+  <xacro:property name="use_camera" value="false" />
   <!-- Camera 1 -->
   <xacro:property name="cam_name" value="camera_road_front" />
   <xacro:property name="cam_hd_visual" value="true" />
@@ -60,16 +60,15 @@
   <!--<xacro:property name="cam_cl_to_ref_rpy" value="0.0077082   0.47182333  0.02633946" /> -->
   <xacro:property name="cam_cl_to_ref_rpy" value="0.00211058  0.64585395  0.03289786" />
   <!-- Camera 2 -->
-  <xacro:property name="use_camera2" value="true" />
+  <xacro:property name="use_camera2" value="false" />
   <xacro:property name="cam2_name" value="camera_horiz_front" />
   <xacro:property name="cam2_cl_to_ref_xyz" value="0.06483087  0.00032532  0.22" />
   <xacro:property name="cam2_cl_to_ref_rpy" value="0.0077082   -0.1  0.02633946" />
   <!-- Lidar -->
   <xacro:property name="use_hokuyo_lidar" value="false" />
   <xacro:property name="use_rplidar" value="false" />
-  <xacro:property name="use_vlp16" value="false" />
+  <!-- IMU -->
   <xacro:property name="use_imu" value="false" />
 
-  <xacro:include filename="$(find roverboard_description)/urdf/roverboard.urdf.xacro" />
    
 </robot>

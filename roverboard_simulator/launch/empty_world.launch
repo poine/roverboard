@@ -12,6 +12,7 @@
   <arg name="world_name" default="worlds/empty.world" />
 
   <arg name="robot_name" default="pierrette"/>
+  <arg name="robot_cfg" default=""/>
   <arg name="robot_initial_xy" default="-x 0 -y 0"/>
   <arg name="robot_initial_z" default="-z 0.08" />
   <arg name="robot_initial_loc" default="$(arg robot_initial_xy) $(arg robot_initial_z)"/>
@@ -19,7 +20,7 @@
   
   <!-- Load URDF into the ROS Parameter Server -->
   <param name="$(arg robot_name)/robot_description"
-	 command="$(find xacro)/xacro $(find roverboard_simulator)urdf/roverboard_gazebo.urdf robot_name:=$(arg robot_name)" />
+	 command="$(find xacro)/xacro $(find roverboard_simulator)urdf/roverboard_gazebo.urdf robot_name:=$(arg robot_name) robot_cfg:=$(arg robot_cfg)" />
   
   <!--  robot_state_publisher -->
   <group if="$(arg start_state_publisher)">

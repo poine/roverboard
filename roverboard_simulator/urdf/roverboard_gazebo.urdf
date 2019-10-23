@@ -2,8 +2,9 @@
 <robot name="$(arg robot_name)" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="robot_name" default="pierrette"/>
+  <xacro:arg name="robot_cfg" default=""/>
   
-  <xacro:include filename="$(find roverboard_description)/urdf/$(arg robot_name).urdf.xacro" />
+  <xacro:include filename="$(find roverboard_description)/urdf/$(arg robot_name)$(arg robot_cfg).urdf.xacro" />
 
   <xacro:include filename="$(find common_simulations)/urdf/sensors_gazebo.urdf.xacro" />
 
@@ -42,5 +43,34 @@
   <xacro:if value="${use_hokuyo_lidar}">
     <xacro:gazebo_hokuyo laser_name="laser1"/>
   </xacro:if>
+
+  <xacro:if value="${use_rplidar}">
+    <xacro:gazebo_rplidar laser_name="laser1"/>
+  </xacro:if>
+
+  <!-- IMU -->
+  <xacro:if value="${use_imu}">
+    <gazebo reference="imu_link">
+      <gravity>true</gravity>
+      <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <visualize>true</visualize>
+        <topic>imu</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+          <topicName>imu</topicName>
+          <bodyName>imu_link</bodyName>
+          <updateRateHZ>50.0</updateRateHZ>
+          <gaussianNoise>0.0</gaussianNoise>
+          <xyzOffset>0 0 0</xyzOffset>
+          <rpyOffset>0 0 0</rpyOffset>
+          <frameName>$(arg robot_name)/imu_link</frameName>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+      </sensor>
+    </gazebo>
+  </xacro:if>
+
+
   
 </robot>
