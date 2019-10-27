@@ -19,7 +19,11 @@
   <!-- Camera 1 -->
   <xacro:property name="use_camera" value="false" />
   <!-- Camera 2 -->
-  <xacro:property name="use_camera2" value="false" />
+  <!-- <xacro:property name="cam2_cl_to_ref_xyz" value="0.06483087  0.00032532  0.22" /> -->
+  <!-- <xacro:property name="cam2_cl_to_ref_rpy" value="0.0077082   -0.1  0.02633946" /> --> 
+  <xacro:property name="cam2_cl_to_ref_xyz" value="0.07307767 0.01085562 0.14008273" />
+  <xacro:property name="cam2_cl_to_ref_rpy" value="-0.007879588662834792 0.05194729473215427 0.014525638137317037" />
+  <xacro:property name="use_camera2" value="true" />
   <!-- Lidar -->
   <xacro:property name="use_hokuyo_lidar" value="false" />
   <xacro:property name="use_rplidar" value="true" />
