@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf8"?>
+
+
+<robot name="caroline" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+   <xacro:property name="robot_name" value="caroline" />
+
+  <!-- Default configuration -->
+  <xacro:include filename="$(find roverboard_description)/urdf/caroline_defaults.urdf.xacro" />
+
+  <!-- Appearance -->
+  <xacro:property name="high_definition_body_visual" value="false" />
+  <xacro:property name="high_definition_wheel_visual" value="true" />
+  <xacro:property name="high_definition_wheel_mesh" value="package://roverboard_description/meshes/skate_wheel_75.dae" />
+  <xacro:property name="high_definition_cwheel_visual" value="true" />
+  <xacro:property name="high_definition_cwheel_plate_visual" value="false" />
+
+  <!-- Sensors configuration -->
+  <!-- Camera 1 -->
+  <xacro:property name="use_camera" value="false" />
+  <!-- Camera 2 -->
+  <xacro:property name="use_camera2" value="false" />
+  <!-- Lidar -->
+  <xacro:property name="use_hokuyo_lidar" value="false" />
+  <xacro:property name="use_rplidar" value="true" />
+  <xacro:property name="use_vlp16" value="false" />
+  
+  <!-- IMU -->
+  <xacro:property name="use_imu" value="false" />
+
+  <xacro:include filename="$(find roverboard_description)/urdf/roverboard.urdf.xacro" />
+   
+</robot>
