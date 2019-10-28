@@ -1,0 +1,42 @@
+#
+#
+# /home/poine/work/robot_data/caroline/floor_tiles_ricou_01.png
+# tiles are 62*42cm rectangles, baselink footprint is aligned on a floor tile corner
+#
+
+1_left_bottom:
+  img:   [118, 711]      # coordinates on image
+  world: [0.41, 0.3, 0]   # coordinates on local floor plane
+
+2_right_bottom:
+  img: [1190, 717]   
+  world:  [0.41, -0.3, 0]    
+
+3_left_top:
+  img: [451, 543]
+  world:  [1.23, 0.3, 0]
+
+4_right_top:
+  img: [1015, 547]
+  world:  [1.23, -0.6, 0]
+
+# 5_left_middle:
+#   img: [184, 105]
+#   world: [1.2, 0.6, 0]
+
+# 6_right_middle:
+#   img_d: [913, 293]
+#   img: [592, 103]
+#   world: [1.2, -0.6, 0]
+  
+7_center_top:
+  img: [645, 546]
+  world:  [1.23, 0., 0]
+
+8_bottom_center:
+  img: [660, 756]
+  world:  [0.41, 0., 0]
+
+# 9_middle_center:
+#   img: [388, 89]
+#   world:  [1.2, 0., 0]
