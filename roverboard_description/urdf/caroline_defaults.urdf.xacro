@@ -67,6 +67,7 @@
   <!-- Lidar -->
   <xacro:property name="use_hokuyo_lidar" value="false" />
   <xacro:property name="use_rplidar" value="false" />
+  <xacro:property name="use_vlp16" value="false" />
   <!-- IMU -->
   <xacro:property name="use_imu" value="false" />
 

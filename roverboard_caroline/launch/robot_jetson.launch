@@ -2,18 +2,21 @@
 <launch>
   <arg name="robot_name" default="caroline_jetson" />
   
+  <arg name="start_hardware" default="true" />
   <arg name="start_base_control" default="true" />
   <arg name="start_description" default="true" />
-  <arg name="start_teleop" default="true" />	
+  <arg name="start_teleop" default="false" />	
   <!-- <arg name="start_camera" default="false" /> -->
   <!-- <arg name="start_lidar" default="true" /> -->
   
   <!-- ****** Starts hardware ****** -->
-  <include file="$(find roverboard_control)/launch/hardware.launch">
-    <arg name="robot_name" value="$(arg robot_name)" />
-    <arg name="odrive_interface_type" default="0" />     <!-- 0->ASCII, 1->CAN -->
-    <arg name="hardware_interface_dt" default="0.02" />
-  </include>
+  <group if="$(arg start_hardware)">
+    <include file="$(find roverboard_control)/launch/hardware.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+      <arg name="odrive_interface_type" default="0" />     <!-- 0->ASCII, 1->CAN -->
+      <arg name="hardware_interface_dt" default="0.02" />
+    </include>
+  </group>
   
   <!-- <node pkg="roverboard_odrive" type="test_odrive_ascii.py" name="odrive_node" /> -->
   
