@@ -151,7 +151,7 @@ target_link_libraries(roverboard_odrive_ascii ${async_comm_LIBRARIES})
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/roverboard_odrive_node.cpp)
 add_executable(test_odrive_can src/test_odrive_can.cpp src/roverboard_odrive_can.cpp)
-target_link_libraries(test_odrive_can ${Boost_LIBRARIES})
+target_link_libraries(test_odrive_can ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(test_odrive_ascii src/test_odrive_ascii.cpp src/roverboard_odrive_ascii.cpp )
 target_link_libraries(test_odrive_ascii ${catkin_LIBRARIES} ${async_comm_LIBRARIES})
