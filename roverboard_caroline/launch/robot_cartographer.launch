@@ -2,16 +2,24 @@
 <launch>
   <arg name="robot_name" default="caroline_jetson" />
   
+  <arg name="start_robot" default="true" />
   <arg name="start_base_control" default="true" />
   <arg name="start_description" default="true" />
   <arg name="start_teleop" default="true" />	
   <arg name="start_camera" default="true" />
   <arg name="start_lidar" default="true" />
   <arg name="start_cartographer" default="true" />
+  <arg name="start_aruco_lm_detection" default="false" />
+  <arg name="start_lane_detection" default="false" />
+  <arg name="start_lane_guidance" default="false" />
   
-  <include file="$(find roverboard_caroline)/launch/robot_jetson.launch">
-    <arg name="robot_name" value="$(arg robot_name)" />
-  </include>
+  <!-- ****** Starts robot ****** -->
+  <group if="$(arg start_robot)">
+    <include file="$(find roverboard_caroline)/launch/robot_jetson.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+      <arg name="start_teleop" value="$(arg start_teleop)" />	
+    </include>
+  </group>
 
   
   <!-- ****** Starts camera ****** -->
@@ -37,10 +45,12 @@
   </group>	
 
   <!--  ****** cartographer *****  -->
+  <arg name="carto_use_aruco_lm" default="false"/>
   <group if="$(arg start_cartographer)">
 
     <!-- cartographer_node -->
-    <arg name="configuration_basename" default="caroline_lsd_2d.lua"/>
+    <!-- <arg name="configuration_basename" default="caroline_lsd_2d_lm.lua"/> -->
+    <arg name="configuration_basename" value="$(eval 'caroline_lsd_2d_lm.lua' if arg('carto_use_aruco_lm') else 'caroline_lsd_2d.lua')"/>
     <node pkg="cartographer_ros" type="cartographer_node" name="cartographer_node" 
           args="-configuration_directory $(find roverboard_caroline)/config
                 -configuration_basename $(arg configuration_basename)"
@@ -55,6 +65,37 @@
           name="cartographer_occupancy_grid_node" 
           args="-resolution 0.05" />
     
+  </group>
+
+  <!-- ****** aruco landmark detector *****  -->
+  <group if="$(arg start_aruco_lm_detection)">
+    <node pkg="common_vision" type="aruco_landmarks_detector_node.py" name="aruco_landmark_detector" output="screen">
+      <param name="robot_name" value="$(arg robot_name)"/>
+      <param name="camera" value="camera_one" />
+      <param name="ref_frame" value="base_link_footprint" />
+    </node>
+  </group>
+  
+  <!--  ****** Lane detection *****  -->
+  <group if="$(arg start_lane_detection)">
+    <!-- <node name="trr_vision_lane_node" pkg="two_d_guidance" type="trr_vision_lane_node.py"> -->
+    <node name="lane_node" pkg="common_vision" type="lane_node.py" output="screen">
+      <param name="robot_name"     value="$(arg robot_name)" />
+      <param name="camera"         value="camera_one"/>
+      <param name="ref_frame"      value="base_link_footprint"/>
+    </node>
+  </group>
+
+  <!--  ****** Guidance *****  -->
+  <group if="$(arg start_lane_guidance)">
+    <node name="trr_guidance_node" pkg="two_d_guidance" type="trr_guidance_node.py" output="screen">
+      <param name="ref_frame" value="base_link_footprint"/>
+      <param name="cmd_topic" value="/caroline_jetson_robot_hardware/diff_drive_controller/cmd_vel"/>
+      <!-- <param name="guidance_mode" value="0"/> -->
+      <!-- <param name="vel_sp" value="0.06"/> -->
+      <!-- <param name="lookahead" value="0.6"/> -->
+      <param name="path_name" value="demo_z/track_trr_real_1.npz"/>
+    </node>
   </group>
   
 </launch>
